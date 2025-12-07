@@ -1,53 +1,95 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import DashboardLayout from "@/components/layout/DashboardLayout";
-import ClientData from "@/components/profile/ClientData";
-import ClientsList from "@/components/profile/ClientsList";
-import ProductsList from "@/components/profile/ProductsList";
-import { User, Users, Package } from "lucide-react";
+import ProfileLayout from "@/components/layout/ProfileLayout";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 const Profile = () => {
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Mi Perfil</h1>
-          <p className="text-muted-foreground">
-            Gestiona tu información, clientes y productos
-          </p>
-        </div>
+    <ProfileLayout activeTab="datos">
+      <div className="space-y-4 animate-fade-in">
+        {/* Profile Details */}
+        <Card className="glass-card">
+          <CardContent className="p-5">
+            <h2 className="text-lg font-semibold text-card-foreground mb-4">
+              Profile Details
+            </h2>
+            <div className="space-y-3">
+              <Input
+                placeholder="Nombre Completo"
+                className="h-12 rounded-xl bg-muted/50 border-0"
+              />
+              <Input
+                placeholder="Correo Electrónico"
+                type="email"
+                className="h-12 rounded-xl bg-muted/50 border-0"
+              />
+              <Input
+                placeholder="Teléfono de Contacto"
+                type="tel"
+                className="h-12 rounded-xl bg-muted/50 border-0"
+              />
+              <Input
+                placeholder="Dirección del Negocio"
+                className="h-12 rounded-xl bg-muted/50 border-0"
+              />
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Tabs */}
-        <Tabs defaultValue="datos" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
-            <TabsTrigger value="datos" className="gap-2">
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">Mis Datos</span>
-            </TabsTrigger>
-            <TabsTrigger value="clientes" className="gap-2">
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Clientes</span>
-            </TabsTrigger>
-            <TabsTrigger value="productos" className="gap-2">
-              <Package className="h-4 w-4" />
-              <span className="hidden sm:inline">Productos</span>
-            </TabsTrigger>
-          </TabsList>
+        {/* Performance Overview */}
+        <Card className="glass-card">
+          <CardContent className="p-5">
+            <h2 className="text-lg font-semibold text-card-foreground mb-4">
+              Performance Overview
+            </h2>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Ventas Totales</p>
+                <p className="text-xl font-bold text-primary">$15,400</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Listados Activos</p>
+                <p className="text-xl font-bold text-card-foreground">85</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Calificación del Vendedor</p>
+                <p className="text-xl font-bold text-card-foreground">4.8/5</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="datos">
-            <ClientData />
-          </TabsContent>
+        {/* Account Settings */}
+        <Card className="glass-card">
+          <CardContent className="p-5">
+            <h2 className="text-lg font-semibold text-card-foreground mb-4">
+              Account Settings
+            </h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Cambiar Contraseña</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-muted-foreground">Notificaciones</span>
+                  <Switch className="data-[state=checked]:bg-primary" />
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Métodos de Pago</span>
+                <button className="text-sm text-destructive font-medium hover:underline">
+                  Desactivar Cuenta
+                </button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="clientes">
-            <ClientsList />
-          </TabsContent>
-
-          <TabsContent value="productos">
-            <ProductsList />
-          </TabsContent>
-        </Tabs>
+        {/* Save Button */}
+        <Button className="w-full h-12 rounded-xl text-base font-semibold">
+          Guardar Cambios
+        </Button>
       </div>
-    </DashboardLayout>
+    </ProfileLayout>
   );
 };
 

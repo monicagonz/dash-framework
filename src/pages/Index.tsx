@@ -5,7 +5,6 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirigir al login por defecto
     navigate("/login");
   }, [navigate]);
 
