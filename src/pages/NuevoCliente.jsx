@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { User, Mail, UserPlus, Eye, EyeOff, Lock } from "lucide-react";
+import { User, Mail, UserPlus, Eye, EyeOff, Lock, Phone } from "lucide-react";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,6 +13,7 @@ const NuevoCliente = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
+    phone: "",
     email: "",
     password: "",
     referredBy: referrerId || "",
@@ -37,6 +38,7 @@ const NuevoCliente = () => {
         },
         body: JSON.stringify({
           name: formData.fullName,
+          phone: formData.phone,
           email: formData.email,
           password: formData.password,
         }),
@@ -117,6 +119,21 @@ const NuevoCliente = () => {
               </div>
             </div>
 
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Celular</label>
+              <div className="relative">
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
+                <Input
+                  type="tel"
+                  name="phone"
+                  placeholder="Mi celular"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                  required
+                />
+              </div>
+            </div>
 
             <div className="space-y-2">
               <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
