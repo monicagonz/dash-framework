@@ -43,23 +43,26 @@ const Profile = () => {
           });
           updateProfile(userData);
         } else {
-          // Usar datos de localStorage individuales
+          // Usar solo datos de localStorage individuales - sin fallback a mock data
           setFormData({
-            fullName: sellerName || profile.fullName || "",
-            email: email || profile.email || "",
-            phone: profile.phone || "",
-            address: profile.address || "",
+            fullName: sellerName || "",
+            email: email || "",
+            phone: "",
+            address: "",
             username: username || "",
             platform: platform || "",
           });
         }
       } catch (error) {
         console.error("Error loading profile from localStorage:", error);
+        // En caso de error, mostrar campos vacíos en lugar de mock data
         setFormData({
-          fullName: profile.fullName,
-          email: profile.email,
-          phone: profile.phone,
-          address: profile.address,
+          fullName: "",
+          email: "",
+          phone: "",
+          address: "",
+          username: "",
+          platform: "",
         });
       } finally {
         setIsFetching(false);
