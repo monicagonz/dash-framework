@@ -6,8 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { ProfileProvider } from "@/context/ProfileContext";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import LoginVendedor from "./pages/LoginVendedor";
+import VendedorRegister from "./pages/VendedorRegister";
 import Profile from "./pages/Profile";
 import ProfileClientes from "./pages/ProfileClientes";
 import ProfileProductos from "./pages/ProfileProductos";
@@ -27,8 +27,8 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<LoginVendedor />} />
+              <Route path="/register" element={<VendedorRegister />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/clientes" element={<ProfileClientes />} />
               <Route path="/profile/productos" element={<ProfileProductos />} />
