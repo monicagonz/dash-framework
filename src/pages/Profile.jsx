@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfileLayout from "@/components/layout/ProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,27 +11,90 @@ const Profile = () => {
   const { profile, updateProfile } = useProfile();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    fullName: profile.fullName,
-    email: profile.email,
-    phone: profile.phone,
-    address: profile.address,
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+
+  // Cargar datos del perfil al montar el componente
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("https://api.tu-proyecto.com/seller/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setFormData({
+            fullName: data.fullName || "",
+            email: data.email || "",
+            phone: data.phone || "",
+            address: data.address || "",
+          });
+          updateProfile(data);
+        }
+      } catch (error) {
+        // Si falla, usar datos del contexto como fallback
+        setFormData({
+          fullName: profile.fullName,
+          email: profile.email,
+          phone: profile.phone,
+          address: profile.address,
+        });
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+      const response = await fetch("https://api.tu-proyecto.com/seller/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al guardar el perfil");
+      }
+
       updateProfile(formData);
-      setIsLoading(false);
       toast({
         title: "Perfil actualizado",
         description: "Tus datos se han guardado correctamente.",
       });
-    }, 800);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "No se pudo guardar el perfil. Intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleNotificationsChange = (checked) => {
