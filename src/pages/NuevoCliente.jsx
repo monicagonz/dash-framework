@@ -29,7 +29,7 @@ const NuevoCliente = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://api.tu-proyecto.com/register-lead", {
+      const response = await fetch("http://72.61.76.44:8083/clients/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
