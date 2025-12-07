@@ -150,10 +150,18 @@ const NuevoCliente = () => {
                 className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 required
               >
-                <option value="tiktok" className="bg-[#1A0B2E] text-white">TikTok</option>
-                <option value="instagram" className="bg-[#1A0B2E] text-white">Instagram</option>
-                <option value="youtube" className="bg-[#1A0B2E] text-white">YouTube</option>
-                <option value="facebook" className="bg-[#1A0B2E] text-white">Facebook</option>
+                <option value="tiktok" className="bg-[#1A0B2E] text-white">
+                  TikTok
+                </option>
+                <option value="instagram" className="bg-[#1A0B2E] text-white">
+                  Instagram
+                </option>
+                <option value="youtube" className="bg-[#1A0B2E] text-white">
+                  YouTube
+                </option>
+                <option value="facebook" className="bg-[#1A0B2E] text-white">
+                  Facebook
+                </option>
               </select>
             </div>
 
