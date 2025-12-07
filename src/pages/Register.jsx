@@ -49,12 +49,12 @@ const Register = () => {
           <CardContent className="p-6">
             {/* Header */}
             <div className="mb-6">
-              <p className="text-sm text-muted-foreground mb-1">Registro</p>
+              <p className="text-sm text-muted-foreground mb-1">Registro Vendedor</p>
               <h1 className="text-2xl font-bold text-card-foreground">
                 Crea tu cuenta
               </h1>
               <p className="text-sm text-muted-foreground mt-2">
-                Ingresa tus datos para registrarte
+                Regístrate para gestionar tus productos y clientes
               </p>
             </div>
 

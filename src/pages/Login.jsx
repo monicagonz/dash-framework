@@ -34,12 +34,12 @@ const Login = () => {
           <CardContent className="p-6">
             {/* Header */}
             <div className="mb-6">
-              <p className="text-sm text-muted-foreground mb-1">Log in</p>
+              <p className="text-sm text-muted-foreground mb-1">Iniciar Sesión</p>
               <h1 className="text-2xl font-bold text-card-foreground">
-                Hey, Welcome!
+                ¡Hola, Bienvenido!
               </h1>
               <p className="text-sm text-muted-foreground mt-2">
-                Enter your details to get sign in to your account
+                Ingresa tus datos para acceder a tu cuenta de vendedor
               </p>
             </div>
 
@@ -47,7 +47,7 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 type="email"
-                placeholder="Enter your email address"
+                placeholder="Ingresa tu correo electrónico"
                 className="h-12 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
                 required
               />
@@ -55,7 +55,7 @@ const Login = () => {
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Your password"
+                  placeholder="Tu contraseña"
                   className="h-12 rounded-xl bg-muted/50 border-0 pr-12 placeholder:text-muted-foreground/60"
                   required
                 />
@@ -72,10 +72,10 @@ const Login = () => {
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Checkbox className="rounded border-muted-foreground/30" />
-                  <span className="text-muted-foreground">Remember me</span>
+                  <span className="text-muted-foreground">Recuérdame</span>
                 </label>
                 <a href="#" className="text-primary font-medium hover:underline">
-                  Forgot Password
+                  ¿Olvidaste tu contraseña?
                 </a>
               </div>
 
@@ -85,7 +85,7 @@ const Login = () => {
                 className="w-full h-12 rounded-xl text-base font-semibold"
                 disabled={isLoading}
               >
-                {isLoading ? "Logging in..." : "Log in"}
+                {isLoading ? "Iniciando..." : "Iniciar Sesión"}
               </Button>
             </form>
 
@@ -95,7 +95,7 @@ const Login = () => {
                 <span className="w-full border-t border-muted" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or Log in with</span>
+                <span className="bg-card px-2 text-muted-foreground">O inicia sesión con</span>
               </div>
             </div>
 
