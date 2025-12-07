@@ -4,15 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
+    username: "",
+    platform: "",
+    follower_count: "",
   });
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -22,19 +20,48 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulación de registro (Mockup)
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "¡Cuenta de vendedor creada con éxito!",
-        description: "Ahora puedes iniciar sesión con tus credenciales.",
+    try {
+      const response = await fetch("http://72.61.76.44:8083/streamers/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          platform: formData.platform,
+          follower_count: parseInt(formData.follower_count) || 0,
+        }),
       });
-      navigate("/login");
-    }, 1500);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("sellerName", formData.username);
+        toast({
+          title: "¡Cuenta de vendedor creada con éxito!",
+          description: "Ahora puedes iniciar sesión con tus credenciales.",
+        });
+        navigate("/login");
+      } else {
+        toast({
+          title: "Error al registrar",
+          description: data.message || "Por favor intenta de nuevo",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo conectar con el servidor",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -64,52 +91,47 @@ const Register = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Nombre completo</label>
+              <label className="text-sm text-white/80 font-medium">Nombre de usuario</label>
               <Input
                 type="text"
-                name="fullName"
-                placeholder="Tu nombre completo"
-                value={formData.fullName}
+                name="username"
+                placeholder="Tu nombre de usuario"
+                value={formData.username}
                 onChange={handleChange}
                 className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 required
               />
             </div>
 
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Plataforma</label>
+              <select
+                name="platform"
+                value={formData.platform}
+                onChange={handleChange}
+                className="w-full h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300 px-3"
+                required
+              >
+                <option value="" className="bg-[#1A0B2E] text-white">Selecciona una plataforma</option>
+                <option value="tiktok" className="bg-[#1A0B2E] text-white">TikTok</option>
+                <option value="instagram" className="bg-[#1A0B2E] text-white">Instagram</option>
+                <option value="youtube" className="bg-[#1A0B2E] text-white">YouTube</option>
+                <option value="twitch" className="bg-[#1A0B2E] text-white">Twitch</option>
+              </select>
+            </div>
 
             <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
+              <label className="text-sm text-white/80 font-medium">Número de seguidores</label>
               <Input
-                type="email"
-                name="email"
-                placeholder="tu@correo.com"
-                value={formData.email}
+                type="number"
+                name="follower_count"
+                placeholder="12345"
+                value={formData.follower_count}
                 onChange={handleChange}
                 className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 required
+                min="0"
               />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Contraseña</label>
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 pr-12 focus:border-primary focus:ring-primary/50 transition-all duration-300"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
             </div>
 
             {/* Submit */}
