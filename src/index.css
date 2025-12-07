@@ -103,7 +103,13 @@
   }
 
   .glass-card {
-    @apply bg-card text-card-foreground rounded-2xl shadow-lg;
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-white;
+  }
+
+  .glass-sidebar {
+    background: hsla(268, 50%, 12%, 0.8);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .input-field {

@@ -44,45 +44,48 @@ const ProfileProductos = () => {
 
   return (
     <ProfileLayout activeTab="productos">
-      <div className="space-y-4 animate-fade-in">
-        <Card className="glass-card">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-card-foreground">
-                Mis Productos
-              </h2>
-              <Button size="sm" className="rounded-xl gap-1" asChild>
-                <Link to="/nuevo-producto">
-                  <Plus className="h-4 w-4" />
-                  Nuevo
-                </Link>
-              </Button>
-            </div>
+      <div className="space-y-6 animate-fade-in">
+        {/* Page Title */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Mis Productos</h1>
+            <p className="text-white/50">Administra tu inventario de productos</p>
+          </div>
+          <Button size="lg" className="rounded-xl gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25" asChild>
+            <Link to="/nuevo-producto">
+              <Plus className="h-5 w-5" />
+              Nuevo Producto
+            </Link>
+          </Button>
+        </div>
 
+        <Card className="glass-card">
+          <CardContent className="p-6">
             {/* Search */}
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="relative mb-6">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
               <Input
                 placeholder="Buscar producto..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-10 pl-9 rounded-xl bg-muted/50 border-0"
+                className="h-12 pl-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
               />
             </div>
 
             {/* Products List */}
             <div className="space-y-3">
               {filteredProducts.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">
-                  No se encontraron productos
-                </p>
+                <div className="text-center py-12">
+                  <Package className="h-12 w-12 text-white/20 mx-auto mb-4" />
+                  <p className="text-white/50">No se encontraron productos</p>
+                </div>
               ) : (
                 filteredProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-muted/30"
+                    className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                   >
-                    <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <div className="h-14 w-14 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {product.image ? (
                         <img
                           src={product.image}
@@ -90,57 +93,57 @@ const ProfileProductos = () => {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <Package className="h-6 w-6 text-muted-foreground" />
+                        <Package className="h-7 w-7 text-white/40" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-card-foreground text-sm truncate">
+                      <h3 className="font-medium text-white text-base truncate">
                         {product.name}
                       </h3>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-primary font-semibold text-sm">
+                      <div className="flex items-center gap-3 mt-1">
+                        <span className="text-primary font-bold text-lg">
                           ${product.price.toFixed(2)}
                         </span>
                         <Badge
                           variant="secondary"
-                          className={`text-xs ${
+                          className={`text-xs px-2 py-1 ${
                             product.status === "Activo"
-                              ? "bg-primary/20 text-primary"
+                              ? "bg-primary/20 text-primary border border-primary/30"
                               : product.status === "Agotado"
-                              ? "bg-destructive/20 text-destructive"
-                              : "bg-warning/20 text-warning"
+                              ? "bg-destructive/20 text-destructive border border-destructive/30"
+                              : "bg-warning/20 text-warning border border-warning/30"
                           }`}
                         >
                           {product.status}
                         </Badge>
                       </div>
                     </div>
-                    <div className="flex gap-1">
+                    <div className="flex gap-2">
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-10 w-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
                         onClick={() => handleEdit(product.id)}
                       >
-                        <Edit className="h-4 w-4 text-muted-foreground" />
+                        <Edit className="h-4 w-4 text-white/70" />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-destructive/10 hover:bg-destructive/20 border border-destructive/20">
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="glass-card">
+                        <AlertDialogContent className="glass-card border border-white/10">
                           <AlertDialogHeader>
-                            <AlertDialogTitle>¿Eliminar producto?</AlertDialogTitle>
-                            <AlertDialogDescription>
+                            <AlertDialogTitle className="text-white">¿Eliminar producto?</AlertDialogTitle>
+                            <AlertDialogDescription className="text-white/60">
                               Esta acción no se puede deshacer. El producto "{product.name}" será eliminado permanentemente.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel className="rounded-xl">Cancelar</AlertDialogCancel>
+                            <AlertDialogCancel className="rounded-xl bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white">Cancelar</AlertDialogCancel>
                             <AlertDialogAction
-                              className="rounded-xl bg-destructive hover:bg-destructive/90"
+                              className="rounded-xl bg-destructive hover:bg-destructive/90 text-white"
                               onClick={() => handleDelete(product.id, product.name)}
                             >
                               Eliminar
@@ -157,7 +160,7 @@ const ProfileProductos = () => {
         </Card>
 
         {/* Add Product Button */}
-        <Button className="w-full h-12 rounded-xl text-base font-semibold" asChild>
+        <Button className="w-full h-14 rounded-xl text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25" asChild>
           <Link to="/nuevo-producto">
             <Plus className="mr-2 h-5 w-5" />
             Agregar Nuevo Producto
