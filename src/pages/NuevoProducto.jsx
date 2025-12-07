@@ -69,7 +69,7 @@ const NuevoProducto = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.price) {
       toast({
         title: "Campos requeridos",
@@ -82,11 +82,11 @@ const NuevoProducto = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.tu-proyecto.com/seller/products", {
+      const response = await fetch("https://72.61.76.44:8082.com/seller/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
           name: formData.name,
@@ -95,8 +95,8 @@ const NuevoProducto = () => {
           price: parseFloat(formData.price),
           stock: parseInt(formData.stock) || 0,
           files: imagePreviews,
-          streamer: localStorage.getItem("sellerName") || ""
-        })
+          streamer: localStorage.getItem("sellerName") || "",
+        }),
       });
 
       const data = await response.json();
@@ -114,7 +114,7 @@ const NuevoProducto = () => {
       toast({
         title: "Error",
         description: error.message || "No se pudo publicar el producto. Intenta de nuevo.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -141,19 +141,15 @@ const NuevoProducto = () => {
         <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="mb-6 text-center">
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Nuevo Producto
-            </h1>
-            <p className="text-white/60">
-              Completa los datos para publicar tu producto
-            </p>
+            <h1 className="text-2xl font-bold text-white mb-2">Nuevo Producto</h1>
+            <p className="text-white/60">Completa los datos para publicar tu producto</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Image Upload */}
             <div className="space-y-3">
               <Label className="text-sm text-white/80 font-medium">Fotos del Producto</Label>
-              
+
               {/* Image Grid */}
               <div className="grid grid-cols-3 gap-2">
                 {imagePreviews.map((preview, index) => (
@@ -172,13 +168,11 @@ const NuevoProducto = () => {
                     </button>
                   </div>
                 ))}
-                
+
                 {/* Add More Button */}
                 <div
                   className={`relative aspect-square rounded-xl border-2 border-dashed transition-colors flex items-center justify-center cursor-pointer ${
-                    dragActive
-                      ? "border-primary bg-primary/10"
-                      : "border-white/20 hover:border-white/40 bg-white/5"
+                    dragActive ? "border-primary bg-primary/10" : "border-white/20 hover:border-white/40 bg-white/5"
                   }`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
@@ -271,11 +265,7 @@ const NuevoProducto = () => {
 
             {/* Actions */}
             <div className="pt-4 space-y-3">
-              <Button
-                type="submit"
-                className="w-full h-12 rounded-xl text-base font-semibold"
-                disabled={isLoading}
-              >
+              <Button type="submit" className="w-full h-12 rounded-xl text-base font-semibold" disabled={isLoading}>
                 {isLoading ? "PUBLICANDO..." : "PUBLICAR"}
               </Button>
               <Button
