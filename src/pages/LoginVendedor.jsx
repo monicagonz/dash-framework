@@ -53,15 +53,26 @@ const Login = () => {
         localStorage.setItem("authToken", data.token);
       }
       
-      // Guardar username - puede venir como username, user, name o streamer
-      const username = data.username || data.user || data.streamer || data.name;
-      if (username) {
+      // Guardar username - extraer el string del objeto si es necesario
+      let username = data.username || data.user || data.streamer || data.name;
+      
+      // Si username es un objeto, extraer la propiedad username del objeto
+      if (username && typeof username === 'object') {
+        username = username.username || username.name || username.user || '';
+      }
+      
+      if (username && typeof username === 'string') {
         localStorage.setItem("username", username);
         console.log("Username saved:", username);
       }
       
-      if (data.name) {
-        localStorage.setItem("sellerName", data.name);
+      // Guardar sellerName
+      let sellerName = data.name;
+      if (sellerName && typeof sellerName === 'object') {
+        sellerName = sellerName.name || sellerName.username || '';
+      }
+      if (sellerName && typeof sellerName === 'string') {
+        localStorage.setItem("sellerName", sellerName);
       }
 
       toast({
