@@ -36,25 +36,33 @@ const ProfileProductos = () => {
     const fetchProducts = async () => {
       try {
         const username = localStorage.getItem("username") || "";
+        console.log("Fetching products for username:", username);
 
         if (!username) {
+          console.log("No username found in localStorage");
           setProducts([]);
           setIsLoading(false);
           return;
         }
 
-        const response = await fetch(`https://liveshop.com.co/ecommerce/products/${username}`, {
+        const url = `https://liveshop.com.co/ecommerce/products/${username}`;
+        console.log("API URL:", url);
+
+        const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             "Content-Type": "application/json",
           },
         });
 
+        console.log("Response status:", response.status);
+
         if (!response.ok) {
           throw new Error("Error al cargar productos");
         }
 
         const data = await response.json();
+        console.log("Products received:", data);
         setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching products:", error);
