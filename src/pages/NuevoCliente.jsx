@@ -135,31 +135,3 @@ const NuevoCliente = () => {
 };
 
 export default NuevoCliente;
-
-              {/* Buttons */}
-              <div className="flex gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1 h-12 rounded-xl border-border bg-muted/30 font-medium text-card-foreground hover:bg-muted/50"
-                  onClick={() => navigate("/profile/clientes")}
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  type="submit"
-                  className="flex-1 h-12 rounded-xl text-base font-semibold"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Guardando..." : "Guardar"}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-};
-
-export default NuevoCliente;
