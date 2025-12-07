@@ -11,7 +11,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
-    phone: "",
     email: "",
     password: "",
   });
@@ -77,18 +76,6 @@ const Register = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Celular</label>
-              <Input
-                type="tel"
-                name="phone"
-                placeholder="Tu número de celular"
-                value={formData.phone}
-                onChange={handleChange}
-                className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
-                required
-              />
-            </div>
 
             <div className="space-y-2">
               <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
