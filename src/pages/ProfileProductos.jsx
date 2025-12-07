@@ -43,7 +43,7 @@ const ProfileProductos = () => {
           return;
         }
 
-        const response = await fetch(`http://72.61.76.44:8082/products/streamer/${username}`, {
+        const response = await fetch(`https://liveshop.com.co:8082/products/streamer/${username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             "Content-Type": "application/json",

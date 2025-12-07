@@ -97,7 +97,7 @@ const NuevoProducto = () => {
         formDataToSend.append("files", file);
       });
 
-      const response = await fetch("http://72.61.76.44:8082/products/upload", {
+      const response = await fetch("https://liveshop.com.co:8082/products/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,

@@ -25,7 +25,7 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://72.61.76.44:8083/streamers/register", {
+      const response = await fetch("https://liveshop.com.co:8083/streamers/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -31,7 +31,7 @@ const NuevoCliente = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://72.61.76.44:8083/clients/register", {
+      const response = await fetch("https://liveshop.com.co:8083/clients/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
