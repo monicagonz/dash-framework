@@ -24,18 +24,39 @@ const NuevoCliente = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    setTimeout(() => {
-      setIsLoading(false);
+
+    try {
+      const response = await fetch("https://api.tu-proyecto.com/register-lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al guardar los datos");
+      }
+
       toast({
-        title: "¡Cliente registrado!",
-        description: "El cliente ha sido agregado exitosamente.",
+        title: "¡Datos guardados!",
+        description: "El cliente ha sido registrado correctamente.",
       });
       navigate("/profile/clientes");
-    }, 1000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "No se pudieron guardar los datos. Intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
