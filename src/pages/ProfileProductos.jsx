@@ -100,10 +100,18 @@ const ProfileProductos = () => {
                       <h3 className="font-medium text-white text-base truncate">
                         {product.name}
                       </h3>
-                      <div className="flex items-center gap-3 mt-1">
+                      <div className="flex items-center gap-3 mt-1 flex-wrap">
                         <span className="text-primary font-bold text-lg">
                           ${product.price.toFixed(2)}
                         </span>
+                        {product.category && (
+                          <Badge
+                            variant="secondary"
+                            className="text-xs px-2 py-1 bg-white/10 text-white/70 border border-white/20"
+                          >
+                            {product.category}
+                          </Badge>
+                        )}
                         <Badge
                           variant="secondary"
                           className={`text-xs px-2 py-1 ${
