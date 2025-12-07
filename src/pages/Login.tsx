@@ -36,7 +36,7 @@ const Login = () => {
             <div className="mb-6">
               <p className="text-sm text-muted-foreground mb-1">Log in</p>
               <h1 className="text-2xl font-bold text-card-foreground">
-                Hey, Welcome! 👋
+                Hey, Welcome!
               </h1>
               <p className="text-sm text-muted-foreground mt-2">
                 Enter your details to get sign in to your account
