@@ -1,6 +1,6 @@
 import { Leaf } from "lucide-react";
 
-const LullabayLogo = ({ className = "", size = "md", variant = "light" }) => {
+const ShopMatchLogo = ({ className = "", size = "md", variant = "light" }) => {
   const sizes = {
     sm: { icon: 14, text: "text-base", box: "h-6 w-6" },
     md: { icon: 16, text: "text-lg", box: "h-7 w-7" },
@@ -15,10 +15,10 @@ const LullabayLogo = ({ className = "", size = "md", variant = "light" }) => {
         <Leaf className="text-primary-foreground" size={sizes[size].icon} />
       </div>
       <span className={`font-bold ${sizes[size].text} ${textColor}`}>
-        Lullaby
+        Shop Match
       </span>
     </div>
   );
 };
 
-export default LullabayLogo;
+export default ShopMatchLogo;
