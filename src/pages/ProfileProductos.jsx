@@ -26,6 +26,11 @@ const ProfileProductos = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Filtrar productos por búsqueda
+  const filteredProducts = products.filter((product) =>
+    product.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   // Cargar productos reales desde la API
   useEffect(() => {
     const fetchProducts = async () => {
