@@ -42,9 +42,9 @@ const Profile = () => {
     <ProfileLayout activeTab="datos">
       <div className="space-y-4 animate-fade-in">
         {/* Profile Details */}
-        <Card className="glass-card">
+        <Card className="glass-card border-0">
           <CardContent className="p-5">
-            <h2 className="text-lg font-semibold text-card-foreground mb-4">
+            <h2 className="text-base font-semibold text-card-foreground mb-4">
               Profile Details
             </h2>
             <div className="space-y-3">
@@ -52,36 +52,36 @@ const Profile = () => {
                 placeholder="Nombre Completo"
                 value={formData.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
-                className="h-12 rounded-xl bg-muted/50 border-0"
+                className="h-12 rounded-xl bg-muted/60 border border-border/50 text-card-foreground placeholder:text-muted-foreground"
               />
               <Input
                 placeholder="Correo Electrónico"
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className="h-12 rounded-xl bg-muted/50 border-0"
+                className="h-12 rounded-xl bg-muted/60 border border-border/50 text-card-foreground placeholder:text-muted-foreground"
               />
               <Input
                 placeholder="Teléfono de Contacto"
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
-                className="h-12 rounded-xl bg-muted/50 border-0"
+                className="h-12 rounded-xl bg-muted/60 border border-border/50 text-card-foreground placeholder:text-muted-foreground"
               />
               <Input
                 placeholder="Dirección del Negocio"
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
-                className="h-12 rounded-xl bg-muted/50 border-0"
+                className="h-12 rounded-xl bg-muted/60 border border-border/50 text-card-foreground placeholder:text-muted-foreground"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Performance Overview */}
-        <Card className="glass-card">
+        <Card className="glass-card border-0">
           <CardContent className="p-5">
-            <h2 className="text-lg font-semibold text-card-foreground mb-4">
+            <h2 className="text-base font-semibold text-card-foreground mb-4">
               Performance Overview
             </h2>
             <div className="grid grid-cols-3 gap-4 text-center">
@@ -108,14 +108,14 @@ const Profile = () => {
         </Card>
 
         {/* Account Settings */}
-        <Card className="glass-card">
+        <Card className="glass-card border-0">
           <CardContent className="p-5">
-            <h2 className="text-lg font-semibold text-card-foreground mb-4">
+            <h2 className="text-base font-semibold text-card-foreground mb-4">
               Account Settings
             </h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Cambiar Contraseña</span>
+                <span className="text-sm text-card-foreground">Cambiar Contraseña</span>
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-muted-foreground">Notificaciones</span>
                   <Switch
@@ -126,8 +126,8 @@ const Profile = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Métodos de Pago</span>
-                <button className="text-sm text-destructive font-medium hover:underline">
+                <span className="text-sm text-card-foreground">Métodos de Pago</span>
+                <button className="text-sm text-primary font-medium hover:underline">
                   Desactivar Cuenta
                 </button>
               </div>
@@ -137,7 +137,7 @@ const Profile = () => {
 
         {/* Save Button */}
         <Button
-          className="w-full h-12 rounded-xl text-base font-semibold"
+          className="w-full h-12 rounded-xl text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={handleSave}
           disabled={isLoading}
         >

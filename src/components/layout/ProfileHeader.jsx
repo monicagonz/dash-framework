@@ -21,29 +21,26 @@ const ProfileHeader = ({ activeTab }) => {
   const currentTab = getActiveTab();
 
   return (
-    <header className="bg-header rounded-b-3xl px-6 py-4">
+    <header className="bg-header rounded-b-3xl px-5 pt-4 pb-5">
       {/* Logo */}
-      <div className="mb-6">
+      <div className="mb-5">
         <LullabayLogo variant="light" />
       </div>
 
       {/* Tabs */}
-      <nav className="flex gap-2">
+      <nav className="flex bg-header-tabs rounded-xl p-1">
         {tabs.map((tab) => (
           <Link
             key={tab.id}
             to={tab.href}
             className={cn(
-              "relative px-4 py-2 text-sm font-medium transition-colors rounded-lg",
+              "flex-1 text-center py-2.5 text-sm font-medium transition-all rounded-lg",
               currentTab === tab.id
-                ? "text-foreground"
-                : "text-foreground/60 hover:text-foreground/80"
+                ? "bg-card text-card-foreground shadow-sm"
+                : "text-foreground/70 hover:text-foreground"
             )}
           >
             {tab.name}
-            {currentTab === tab.id && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-            )}
           </Link>
         ))}
       </nav>
