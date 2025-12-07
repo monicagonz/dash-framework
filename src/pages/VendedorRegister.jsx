@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
+    email: "",
     username: "",
     platform: "",
     follower_count: "",
@@ -26,6 +28,8 @@ const Register = () => {
 
     try {
       const requestBody = {
+        name: formData.name,
+        email: formData.email,
         username: formData.username,
         platform: formData.platform,
         follower_count: parseInt(formData.follower_count) || 0,
@@ -98,6 +102,32 @@ const Register = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Nombre completo</label>
+              <Input
+                type="text"
+                name="name"
+                placeholder="Tu nombre completo"
+                value={formData.name}
+                onChange={handleChange}
+                className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
+              <Input
+                type="email"
+                name="email"
+                placeholder="tu@correo.com"
+                value={formData.email}
+                onChange={handleChange}
+                className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                required
+              />
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm text-white/80 font-medium">Nombre de usuario</label>
               <Input
