@@ -5,19 +5,66 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
+
+    try {
+      const response = await fetch("https://api.tu-proyecto.com/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Credenciales inválidas");
+      }
+
+      // Guardar token en localStorage
+      localStorage.setItem("authToken", data.token);
+      
+      toast({
+        title: "¡Bienvenido!",
+        description: "Inicio de sesión exitoso"
+      });
+
       navigate("/profile");
-    }, 1000);
+    } catch (error) {
+      toast({
+        title: "Error de autenticación",
+        description: error.message || "Credenciales inválidas. Intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -50,6 +97,9 @@ const Login = () => {
               <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
               <Input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="tu@correo.com"
                 className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 required
@@ -61,6 +111,9 @@ const Login = () => {
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="••••••••"
                   className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 pr-12 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                   required
