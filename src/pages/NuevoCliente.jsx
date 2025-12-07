@@ -34,7 +34,12 @@ const NuevoCliente = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          referredBy: formData.referredBy,
+        }),
       });
 
       const data = await response.json();
