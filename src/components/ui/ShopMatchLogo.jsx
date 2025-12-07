@@ -1,4 +1,4 @@
-import { Leaf } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 
 const ShopMatchLogo = ({ className = "", size = "md", variant = "light" }) => {
   const sizes = {
@@ -12,7 +12,7 @@ const ShopMatchLogo = ({ className = "", size = "md", variant = "light" }) => {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       <div className={`flex ${sizes[size].box} items-center justify-center rounded-lg bg-primary`}>
-        <Leaf className="text-primary-foreground" size={sizes[size].icon} />
+        <ShoppingBag className="text-primary-foreground" size={sizes[size].icon} />
       </div>
       <span className={`font-bold ${sizes[size].text} ${textColor}`}>
         Shop Match
