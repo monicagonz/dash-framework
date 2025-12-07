@@ -25,27 +25,38 @@ const ProfileClientes = () => {
 
   return (
     <ProfileLayout activeTab="clientes">
-      <div className="space-y-4 animate-fade-in">
-        <Card className="glass-card">
-          <CardContent className="p-5">
-            <h2 className="text-lg font-semibold text-card-foreground mb-4">
-              Client List
-            </h2>
+      <div className="space-y-6 animate-fade-in">
+        {/* Page Title */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Mis Clientes</h1>
+            <p className="text-white/50">Administra tu cartera de clientes</p>
+          </div>
+          <Button 
+            size="lg" 
+            className="rounded-xl gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25"
+            onClick={() => navigate("/nuevo-cliente")}
+          >
+            <Plus className="h-5 w-5" />
+            Nuevo Cliente
+          </Button>
+        </div>
 
+        <Card className="glass-card">
+          <CardContent className="p-6">
             {/* Search */}
-            <div className="mb-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar cliente..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-10 pl-9 rounded-xl bg-muted/50 border-0"
-                />
-              </div>
+            <div className="relative mb-6">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
+              <Input
+                placeholder="Buscar cliente..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="h-12 pl-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+              />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground font-medium mb-2 px-2">
+            {/* Table Header */}
+            <div className="grid grid-cols-2 gap-4 text-sm text-white/50 font-medium mb-4 px-4 pb-3 border-b border-white/10">
               <span>Cliente</span>
               <span>Usuario</span>
             </div>
@@ -53,19 +64,19 @@ const ProfileClientes = () => {
             {/* Client Rows */}
             <div className="space-y-2">
               {filteredClients.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
+                <div className="text-center py-12 text-white/50">
                   No se encontraron clientes
                 </div>
               ) : (
                 filteredClients.map((client) => (
                   <div
                     key={client.id}
-                    className="grid grid-cols-2 gap-2 items-center py-3 px-2 rounded-xl bg-muted/30 text-sm"
+                    className="grid grid-cols-2 gap-4 items-center py-4 px-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                   >
-                    <span className="font-medium text-card-foreground truncate">
+                    <span className="font-medium text-white truncate">
                       {client.name}
                     </span>
-                    <span className="text-muted-foreground text-xs truncate">
+                    <span className="text-white/60 text-sm truncate">
                       {client.username}
                     </span>
                   </div>
@@ -77,7 +88,7 @@ const ProfileClientes = () => {
 
         {/* Add Client Button */}
         <Button 
-          className="w-full h-12 rounded-xl text-base font-semibold"
+          className="w-full h-14 rounded-xl text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25"
           onClick={() => navigate("/nuevo-cliente")}
         >
           <Plus className="h-5 w-5 mr-2" />
