@@ -1,26 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileLayout from "@/components/layout/ProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Plus } from "lucide-react";
-
-const clientsData = [
-  { id: 1, name: "María González", username: "@maria_gonzalez" },
-  { id: 2, name: "Carlos López", username: "@carlos.lopez" },
-  { id: 3, name: "Michele Castano", username: "@michele_c" },
-  { id: 4, name: "Larriola Ronahanez", username: "@larriola.r" },
-  { id: 5, name: "Ana Martínez", username: "@ana.mtz" },
-  { id: 6, name: "Pedro Sánchez", username: "@pedro_sanchez" },
-];
+import { Search, Plus, Users, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const ProfileClientes = () => {
+  const [clients, setClients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const filteredClients = clientsData.filter((client) => {
-    return client.name.toLowerCase().includes(searchQuery.toLowerCase());
+  // Cargar clientes desde la API
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const response = await fetch("https://api.tu-proyecto.com/seller/clients", {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al cargar clientes");
+        }
+
+        const data = await response.json();
+        setClients(data);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: error.message || "No se pudieron cargar los clientes",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, [toast]);
+
+  const filteredClients = clients.filter((client) => {
+    return client.fullName?.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
@@ -58,14 +84,20 @@ const ProfileClientes = () => {
             {/* Table Header */}
             <div className="grid grid-cols-2 gap-4 text-sm text-white/50 font-medium mb-4 px-4 pb-3 border-b border-white/10">
               <span>Cliente</span>
-              <span>Usuario</span>
+              <span>Contacto</span>
             </div>
 
             {/* Client Rows */}
             <div className="space-y-2">
-              {filteredClients.length === 0 ? (
-                <div className="text-center py-12 text-white/50">
-                  No se encontraron clientes
+              {isLoading ? (
+                <div className="flex items-center justify-center py-12 text-white/50">
+                  <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                  Cargando clientes...
+                </div>
+              ) : filteredClients.length === 0 ? (
+                <div className="text-center py-12">
+                  <Users className="h-12 w-12 text-white/20 mx-auto mb-4" />
+                  <p className="text-white/50">No se encontraron clientes</p>
                 </div>
               ) : (
                 filteredClients.map((client) => (
@@ -74,10 +106,10 @@ const ProfileClientes = () => {
                     className="grid grid-cols-2 gap-4 items-center py-4 px-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                   >
                     <span className="font-medium text-white truncate">
-                      {client.name}
+                      {client.fullName}
                     </span>
                     <span className="text-white/60 text-sm truncate">
-                      {client.username}
+                      {client.email || client.phone || "-"}
                     </span>
                   </div>
                 ))
