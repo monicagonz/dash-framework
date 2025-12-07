@@ -61,7 +61,7 @@ const NuevoCliente = () => {
             <div className="mb-6 flex justify-center">
               <Badge className="bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm font-medium flex items-center gap-2">
                 <UserPlus className="h-4 w-4" />
-                Invitado por: {referrerId}
+                {referrerId}
               </Badge>
             </div>
           )}
