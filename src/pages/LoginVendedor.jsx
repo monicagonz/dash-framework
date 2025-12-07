@@ -12,16 +12,16 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -30,15 +30,15 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.tu-proyecto.com/api/auth/login", {
+      const response = await fetch("http://72.61.76.44:8083/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();
@@ -49,10 +49,10 @@ const Login = () => {
 
       // Guardar token en localStorage
       localStorage.setItem("authToken", data.token);
-      
+
       toast({
         title: "¡Bienvenido!",
-        description: "Inicio de sesión exitoso"
+        description: "Inicio de sesión exitoso",
       });
 
       navigate("/profile");
@@ -60,7 +60,7 @@ const Login = () => {
       toast({
         title: "Error de autenticación",
         description: error.message || "Credenciales inválidas. Intenta de nuevo.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

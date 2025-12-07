@@ -29,12 +29,12 @@ const NuevoCliente = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.tu-proyecto.com/register-lead", {
+      const response = await fetch("http://api.tu-proyecto.com/register-lead", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -52,7 +52,7 @@ const NuevoCliente = () => {
       toast({
         title: "Error",
         description: error.message || "No se pudieron guardar los datos. Intenta de nuevo.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -90,12 +90,8 @@ const NuevoCliente = () => {
           {/* Header */}
           <div className="mb-8 text-center">
             <p className="text-sm text-primary font-medium mb-2">Registro</p>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              ¡Hola! Regístrate
-            </h1>
-            <p className="text-white/60">
-              Ingresa tus datos para crear tu cuenta
-            </p>
+            <h1 className="text-3xl font-bold text-white mb-2">¡Hola! Regístrate</h1>
+            <p className="text-white/60">Ingresa tus datos para crear tu cuenta</p>
           </div>
 
           {/* Form */}
@@ -158,11 +154,7 @@ const NuevoCliente = () => {
               >
                 Cancelar
               </Button>
-              <Button
-                type="submit"
-                className="flex-1 h-12 rounded-xl text-base font-semibold"
-                disabled={isLoading}
-              >
+              <Button type="submit" className="flex-1 h-12 rounded-xl text-base font-semibold" disabled={isLoading}>
                 {isLoading ? "Registrando..." : "Registrarme"}
               </Button>
             </div>
