@@ -1,15 +1,20 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Image, X } from "lucide-react";
+import { Image, X, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProducts } from "@/context/ProductsContext";
 
-const NuevoProducto = () => {
+const EditarProducto = () => {
+  const { id } = useParams<{ id: string }>();
+  const { getProduct, updateProduct } = useProducts();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [dragActive, setDragActive] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,9 +25,28 @@ const NuevoProducto = () => {
     price: "",
     stock: "",
   });
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const { addProduct } = useProducts();
+
+  useEffect(() => {
+    if (id) {
+      const product = getProduct(parseInt(id));
+      if (product) {
+        setFormData({
+          name: product.name,
+          description: product.description || "",
+          sku: product.sku || "",
+          price: product.price.toString(),
+          stock: product.stock.toString(),
+        });
+        setImagePreview(product.image || null);
+      } else {
+        toast({
+          title: "Producto no encontrado",
+          variant: "destructive",
+        });
+        navigate("/profile/productos");
+      }
+    }
+  }, [id, getProduct, navigate, toast]);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -63,7 +87,7 @@ const NuevoProducto = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.price) {
       toast({
         title: "Campos requeridos",
@@ -75,18 +99,20 @@ const NuevoProducto = () => {
 
     setIsLoading(true);
     setTimeout(() => {
-      addProduct({
-        name: formData.name,
-        description: formData.description,
-        sku: formData.sku,
-        price: parseFloat(formData.price),
-        stock: parseInt(formData.stock) || 0,
-        image: imagePreview || undefined,
-      });
+      if (id) {
+        updateProduct(parseInt(id), {
+          name: formData.name,
+          description: formData.description,
+          sku: formData.sku,
+          price: parseFloat(formData.price),
+          stock: parseInt(formData.stock) || 0,
+          image: imagePreview || undefined,
+        });
+      }
       setIsLoading(false);
       toast({
-        title: "Producto publicado",
-        description: "Tu producto se ha publicado correctamente.",
+        title: "Producto actualizado",
+        description: "Los cambios se han guardado correctamente.",
       });
       navigate("/profile/productos");
     }, 800);
@@ -96,9 +122,19 @@ const NuevoProducto = () => {
     <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
       <Card className="glass-card w-full max-w-md animate-slide-up">
         <CardContent className="p-6">
-          <h1 className="text-xl font-bold text-card-foreground text-center mb-6">
-            Nuevo Producto
-          </h1>
+          <div className="flex items-center gap-3 mb-6">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-xl font-bold text-card-foreground">
+              Editar Producto
+            </h1>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Image Upload */}
@@ -213,7 +249,7 @@ const NuevoProducto = () => {
                 className="w-full h-12 rounded-xl text-base font-semibold"
                 disabled={isLoading}
               >
-                {isLoading ? "PUBLICANDO..." : "PUBLICAR"}
+                {isLoading ? "GUARDANDO..." : "GUARDAR CAMBIOS"}
               </Button>
               <Button
                 type="button"
@@ -231,4 +267,4 @@ const NuevoProducto = () => {
   );
 };
 
-export default NuevoProducto;
+export default EditarProducto;
