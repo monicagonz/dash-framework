@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { getStoredAuthToken } from "@/lib/auth";
 
 const getProductStock = (product) => {
   const rawStock = product?.stock ?? product?.quantity ?? product?.inventory ?? product?.available ?? 0;
@@ -62,6 +63,33 @@ const parseImageUrls = (value) => {
   return [];
 };
 
+const getPrimaryImageUrl = (product) => {
+  const parsedImages = parseImageUrls(product?.image_urls);
+  return (
+    parsedImages?.[0]?.url ||
+    product?.image ||
+    product?.cover ||
+    product?.thumbnail ||
+    product?.images?.[0] ||
+    product?.photo ||
+    ""
+  );
+};
+
+const getSafeImageUrl = (url) => {
+  if (!url) return "";
+  if (url.startsWith("https://")) return url;
+  try {
+    const parsed = new URL(url);
+    const sanitized = `${parsed.hostname}${parsed.pathname}${parsed.search}`;
+    return `https://images.weserv.nl/?url=${encodeURIComponent(sanitized)}`;
+  } catch {
+    const stripped = url.replace(/^https?:\/\//, "");
+    if (!stripped) return "";
+    return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}`;
+  }
+};
+
 const ProductSkeleton = () => (
   <div className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.06] border border-white/[0.08] animate-pulse">
     <div className="h-16 w-16 rounded-xl bg-white/10" />
@@ -84,50 +112,85 @@ const ProfileProductos = () => {
 
   // Cargar productos reales desde la API
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProducts = async () => {
+      setIsLoading(true);
+
       try {
+        const token = getStoredAuthToken();
         const username = localStorage.getItem("username") || "";
-        console.log("Fetching products for username:", username);
 
-        if (!username) {
-          console.log("No username found in localStorage");
-          setProducts([]);
-          setIsLoading(false);
-          return;
+        if (!token) {
+          throw new Error("Sesión expirada. Inicia sesión nuevamente.");
         }
 
-        const url = `https://liveshop.com.co/ecommerce/products/view/${username}`;
-        console.log("API URL:", url);
+        const commonHeaders = {
+          Authorization: `Bearer ${token}`,
+        };
 
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const endpoints = [
+          { label: "productos", url: "https://liveshop.com.co/ecommerce/productos" },
+          username
+            ? { label: "productos_por_usuario", url: `https://liveshop.com.co/ecommerce/products/view/${username}` }
+            : null,
+        ].filter(Boolean);
 
-        console.log("Response status:", response.status);
+        let lastError = null;
 
-        if (!response.ok) {
-          throw new Error("Error al cargar productos");
+        for (const endpoint of endpoints) {
+          try {
+            console.log(`Fetching products from: ${endpoint.url}`);
+            const response = await fetch(endpoint.url, { headers: commonHeaders });
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(errorText || `Error al cargar productos (${response.status})`);
+            }
+            const data = await response.json();
+            const normalizedProducts = Array.isArray(data?.products)
+              ? data.products
+              : Array.isArray(data?.data)
+                ? data.data
+                : Array.isArray(data)
+                  ? data
+                  : [];
+            if (isMounted) {
+              setProducts(normalizedProducts);
+              setTotalProducts(Number(data?.total) || normalizedProducts.length);
+            }
+            console.log(`Products loaded from ${endpoint.label}`, normalizedProducts.length);
+            return;
+          } catch (endpointError) {
+            console.warn(`Failed fetching ${endpoint.label}`, endpointError);
+            lastError = endpointError;
+          }
         }
 
-        const data = await response.json();
-        console.log("Products received:", data);
-        const normalizedProducts = Array.isArray(data) ? data : Array.isArray(data?.products) ? data.products : [];
-        setProducts(normalizedProducts);
-        setTotalProducts(Number(data?.total) || normalizedProducts.length);
+        throw lastError || new Error("No se pudieron cargar los productos.");
       } catch (error) {
         console.error("Error fetching products:", error);
-        setProducts([]);
-        setTotalProducts(0);
+        if (isMounted) {
+          setProducts([]);
+          setTotalProducts(0);
+          toast({
+            title: "No se pudieron cargar tus productos",
+            description: error.message || "Intenta nuevamente en unos minutos.",
+            variant: "destructive",
+          });
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchProducts();
-  }, []);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [toast]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) =>
@@ -160,15 +223,16 @@ const ProfileProductos = () => {
   }, [products, totalProducts]);
 
   // Borrado simulado (sin endpoint DELETE)
-  const handleDelete = (sku, name) => {
-    setProducts((prev) => prev.filter((product) => product.sku !== sku));
+  const handleDelete = (product) => {
+    setProducts((prev) => prev.filter((item) => item.id !== product.id && item.sku !== product.sku));
     toast({
       title: "Producto eliminado (Simulación)",
-      description: `"${name}" se ha eliminado de la vista.`,
+      description: `"${product.name}" se ha eliminado de la vista.`,
     });
   };
 
   const handleEdit = (id) => {
+    if (!id) return;
     navigate(`/editar-producto/${id}`);
   };
 
@@ -239,16 +303,10 @@ const ProfileProductos = () => {
                   const status = getProductStatus(product);
                   const currency = product.currency ?? "COP";
                   const price = formatCurrency(product.price, currency);
-                  const images = parseImageUrls(product.image_urls);
-                  const image =
-                    images?.[0]?.url ||
-                    product.image ||
-                    product.cover ||
-                    product.thumbnail ||
-                    product.images?.[0] ||
-                    product.photo ||
-                    "";
-                  const key = product.sku || product.id || product._id || `${product.name}-${index}`;
+                  const rawImage = getPrimaryImageUrl(product);
+                  const image = getSafeImageUrl(rawImage);
+                  const referenceId = product.id || product.sku || product._id;
+                  const key = referenceId || `${product.name}-${index}`;
                   const createdAt = product.created_at ? new Date(product.created_at) : null;
 
                   return (
@@ -308,7 +366,7 @@ const ProfileProductos = () => {
                           variant="ghost"
                           size="icon"
                           className="h-10 w-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
-                          onClick={() => handleEdit(product.sku)}
+                          onClick={() => handleEdit(referenceId)}
                         >
                           <Edit className="h-4 w-4 text-white/70" />
                         </Button>
@@ -336,7 +394,7 @@ const ProfileProductos = () => {
                               </AlertDialogCancel>
                               <AlertDialogAction
                                 className="rounded-xl bg-destructive hover:bg-destructive/90 text-white"
-                                onClick={() => handleDelete(product.sku, product.name)}
+                                onClick={() => handleDelete(product)}
                               >
                                 Eliminar
                               </AlertDialogAction>

@@ -8,6 +8,7 @@ import { Image, X, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
+import { getStoredAuthToken } from "@/lib/auth";
 
 const NuevoProducto = () => {
   const [dragActive, setDragActive] = useState(false);
@@ -98,10 +99,16 @@ const NuevoProducto = () => {
         formDataToSend.append("files", file);
       });
 
+      const authToken = getStoredAuthToken();
+
+      if (!authToken) {
+        throw new Error("Tu sesión ha expirado. Inicia sesión nuevamente para subir productos.");
+      }
+
       const response = await fetch("https://liveshop.com.co/ecommerce/products/upload", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${authToken}`,
         },
         body: formDataToSend,
       });

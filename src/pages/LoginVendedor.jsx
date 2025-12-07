@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
+import { storeAuthToken } from "@/lib/auth";
 import { Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -48,9 +49,9 @@ const Login = () => {
         throw new Error(data.message || "Credenciales inválidas");
       }
 
-      // Guardar token y datos del usuario en localStorage
+      // Guardar token en sessionStorage/localStorage
       if (data.token) {
-        localStorage.setItem("authToken", data.token);
+        storeAuthToken(data.token);
       }
       
       // Guardar email
