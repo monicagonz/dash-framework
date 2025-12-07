@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Lullaby Design System */
+    /* Shop Match Design System */
     --background: 270 50% 8%;
     --foreground: 0 0% 100%;
 
@@ -38,7 +38,7 @@
 
     --radius: 0.75rem;
 
-    /* Custom Lullaby tokens */
+    /* Custom Shop Match tokens */
     --gradient-start: 268 53% 20%;
     --gradient-end: 270 55% 10%;
     --success: 142 76% 36%;

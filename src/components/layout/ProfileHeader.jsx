@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import LullabayLogo from "@/components/ui/LullabayLogo";
+import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -24,7 +24,7 @@ const ProfileHeader = ({ activeTab }) => {
     <header className="bg-header rounded-b-3xl px-5 pt-4 pb-5">
       {/* Logo */}
       <div className="mb-5">
-        <LullabayLogo variant="light" />
+        <ShopMatchLogo variant="light" />
       </div>
 
       {/* Tabs */}

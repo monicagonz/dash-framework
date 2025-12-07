@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import LullabayLogo from "@/components/ui/LullabayLogo";
+import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
 const Register = () => {
@@ -41,7 +41,7 @@ const Register = () => {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="mb-8">
-          <LullabayLogo size="lg" variant="light" />
+          <ShopMatchLogo size="lg" variant="light" />
         </div>
 
         {/* Card */}

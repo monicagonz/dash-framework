@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, User, Phone, Mail } from "lucide-react";
-import LullabayLogo from "@/components/ui/LullabayLogo";
+import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
 const NuevoCliente = () => {
@@ -49,7 +49,7 @@ const NuevoCliente = () => {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <LullabayLogo size="sm" variant="light" />
+          <ShopMatchLogo size="sm" variant="light" />
           <div className="w-10" />
         </div>
 

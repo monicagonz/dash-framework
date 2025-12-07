@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import LullabayLogo from "@/components/ui/LullabayLogo";
+import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
@@ -26,7 +26,7 @@ const Login = () => {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="mb-8">
-          <LullabayLogo size="lg" variant="light" />
+          <ShopMatchLogo size="lg" variant="light" />
         </div>
 
         {/* Card */}
