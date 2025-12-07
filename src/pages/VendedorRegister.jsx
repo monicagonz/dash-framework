@@ -25,19 +25,26 @@ const Register = () => {
     setIsLoading(true);
 
     try {
+      const requestBody = {
+        username: formData.username,
+        platform: formData.platform,
+        follower_count: parseInt(formData.follower_count) || 0,
+      };
+      
+      console.log("Enviando registro:", requestBody);
+      
       const response = await fetch("https://liveshop.com.co/streamers/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: formData.username,
-          platform: formData.platform,
-          follower_count: parseInt(formData.follower_count) || 0,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
+      console.log("Response status:", response.status);
+      
       const data = await response.json();
+      console.log("Response data:", data);
 
       if (response.ok) {
         localStorage.setItem("sellerName", formData.username);
@@ -49,14 +56,15 @@ const Register = () => {
       } else {
         toast({
           title: "Error al registrar",
-          description: data.message || "Por favor intenta de nuevo",
+          description: data.message || data.detail || "Por favor intenta de nuevo",
           variant: "destructive",
         });
       }
     } catch (error) {
+      console.error("Error completo:", error);
       toast({
         title: "Error de conexión",
-        description: "No se pudo conectar con el servidor",
+        description: `${error.message || "No se pudo conectar con el servidor"}`,
         variant: "destructive",
       });
     } finally {
