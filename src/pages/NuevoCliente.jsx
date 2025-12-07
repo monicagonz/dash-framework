@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { User, Mail, UserPlus, Eye, EyeOff, Lock, Phone } from "lucide-react";
+import { User, Mail, UserPlus, Eye, EyeOff, Lock, AtSign, Users } from "lucide-react";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,9 +13,11 @@ const NuevoCliente = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
-    phone: "",
+    username: "",
     email: "",
     password: "",
+    platform: "tiktok",
+    follower_count: "",
     referredBy: referrerId || "",
   });
   const navigate = useNavigate();
@@ -31,16 +33,20 @@ const NuevoCliente = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://liveshop.com.co:8083/clients/register", {
+      const response = await fetch("https://liveshop.com.co/clients/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.fullName,
-          phone: formData.phone,
           email: formData.email,
+          username: formData.username,
+          name: formData.fullName,
+          password_hash: formData.password,
           password: formData.password,
+          platform: formData.platform,
+          follower_count: parseInt(formData.follower_count) || 0,
+          created_at: new Date().toISOString(),
         }),
       });
 
@@ -120,17 +126,48 @@ const NuevoCliente = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Celular</label>
+              <label className="text-sm text-white/80 font-medium">Nombre de usuario (red social)</label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
+                <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
                 <Input
-                  type="tel"
-                  name="phone"
-                  placeholder="Mi celular"
-                  value={formData.phone}
+                  type="text"
+                  name="username"
+                  placeholder="Mi usuario en la red social"
+                  value={formData.username}
                   onChange={handleChange}
                   className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                   required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Plataforma</label>
+              <select
+                name="platform"
+                value={formData.platform}
+                onChange={handleChange}
+                className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                required
+              >
+                <option value="tiktok" className="bg-[#1A0B2E] text-white">TikTok</option>
+                <option value="instagram" className="bg-[#1A0B2E] text-white">Instagram</option>
+                <option value="youtube" className="bg-[#1A0B2E] text-white">YouTube</option>
+                <option value="facebook" className="bg-[#1A0B2E] text-white">Facebook</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Cantidad de seguidores</label>
+              <div className="relative">
+                <Users className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
+                <Input
+                  type="number"
+                  name="follower_count"
+                  placeholder="Número de seguidores"
+                  value={formData.follower_count}
+                  onChange={handleChange}
+                  className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 />
               </div>
             </div>
