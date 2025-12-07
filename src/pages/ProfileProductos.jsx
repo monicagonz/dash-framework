@@ -26,11 +26,19 @@ const ProfileProductos = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Cargar productos desde la API
+  // Cargar productos reales desde la API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://api.tu-proyecto.com/seller/products", {
+        const username = localStorage.getItem("username") || "";
+        
+        if (!username) {
+          setProducts([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await fetch(`http://72.61.76.44:8082/products/streamer/${username}`, {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
             "Content-Type": "application/json"
@@ -42,51 +50,25 @@ const ProfileProductos = () => {
         }
 
         const data = await response.json();
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
-        toast({
-          title: "Error",
-          description: error.message || "No se pudieron cargar los productos",
-          variant: "destructive"
-        });
+        console.error("Error fetching products:", error);
+        setProducts([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchProducts();
-  }, [toast]);
+  }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleDelete = async (id, name) => {
-    try {
-      const response = await fetch(`https://api.tu-proyecto.com/seller/products/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
-          "Content-Type": "application/json"
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al eliminar el producto");
-      }
-
-      setProducts((prev) => prev.filter((product) => product.id !== id));
-      toast({
-        title: "Producto eliminado",
-        description: `"${name}" se ha eliminado correctamente.`,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || "No se pudo eliminar el producto",
-        variant: "destructive"
-      });
-    }
+  // Borrado simulado (sin endpoint DELETE)
+  const handleDelete = (sku, name) => {
+    setProducts((prev) => prev.filter((product) => product.sku !== sku));
+    toast({
+      title: "Producto eliminado (Simulación)",
+      description: `"${name}" se ha eliminado de la vista.`,
+    });
   };
 
   const handleEdit = (id) => {
@@ -133,7 +115,7 @@ const ProfileProductos = () => {
               ) : (
                 filteredProducts.map((product) => (
                   <div
-                    key={product.id}
+                    key={product.sku}
                     className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                   >
                     <div className="h-14 w-14 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -182,7 +164,7 @@ const ProfileProductos = () => {
                         variant="ghost"
                         size="icon"
                         className="h-10 w-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10"
-                        onClick={() => handleEdit(product.id)}
+                        onClick={() => handleEdit(product.sku)}
                       >
                         <Edit className="h-4 w-4 text-white/70" />
                       </Button>
@@ -203,7 +185,7 @@ const ProfileProductos = () => {
                             <AlertDialogCancel className="rounded-xl bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white">Cancelar</AlertDialogCancel>
                             <AlertDialogAction
                               className="rounded-xl bg-destructive hover:bg-destructive/90 text-white"
-                              onClick={() => handleDelete(product.id, product.name)}
+                              onClick={() => handleDelete(product.sku, product.name)}
                             >
                               Eliminar
                             </AlertDialogAction>
