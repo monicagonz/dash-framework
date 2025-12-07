@@ -41,7 +41,6 @@ const NuevoCliente = () => {
           phone: formData.phone,
           email: formData.email,
           password: formData.password,
-          referredBy: formData.referredBy,
         }),
       });
 
