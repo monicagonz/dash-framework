@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Phone, Mail } from "lucide-react";
+import { User, Phone, Mail } from "lucide-react";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -37,98 +36,104 @@ const NuevoCliente = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center gradient-bg p-4">
-      <div className="w-full max-w-sm">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="text-white hover:bg-white/10"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <ShopMatchLogo size="sm" variant="light" />
-          <div className="w-10" />
+    <div className="flex min-h-screen items-center justify-center gradient-bg relative overflow-hidden">
+      {/* Abstract background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+      </div>
+
+      {/* Main container */}
+      <div className="relative z-10 w-full max-w-lg px-6">
+        {/* Logo */}
+        <div className="mb-10 flex justify-center">
+          <ShopMatchLogo size="lg" variant="light" />
         </div>
 
-        {/* Card */}
-        <Card className="glass-card animate-slide-up overflow-hidden">
-          <CardContent className="p-6">
-            {/* Header */}
-            <div className="mb-6">
-              <p className="text-sm text-muted-foreground mb-1">Registro</p>
-              <h1 className="text-2xl font-bold text-card-foreground">
-                ¡Hola! Regístrate
-              </h1>
-              <p className="text-sm text-muted-foreground mt-2">
-                Ingresa tus datos para crear tu cuenta
-              </p>
-            </div>
+        {/* Glass Card */}
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl">
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <p className="text-sm text-primary font-medium mb-2">Registro</p>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              ¡Hola! Regístrate
+            </h1>
+            <p className="text-white/60">
+              Ingresa tus datos para crear tu cuenta
+            </p>
+          </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Nombre completo</label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
                 <Input
                   type="text"
                   name="fullName"
                   placeholder="Mi nombre completo"
                   value={formData.fullName}
                   onChange={handleChange}
-                  className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
+                  className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                   required
                 />
               </div>
+            </div>
 
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Celular</label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
                 <Input
                   type="tel"
                   name="phone"
                   placeholder="Mi celular"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
+                  className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                   required
                 />
               </div>
+            </div>
 
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
                 <Input
                   type="email"
                   name="email"
                   placeholder="Mi correo electrónico"
                   value={formData.email}
                   onChange={handleChange}
-                  className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
+                  className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                   required
                 />
               </div>
+            </div>
 
-              {/* Buttons */}
-              <div className="flex gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1 h-12 rounded-xl border-border bg-muted/30 font-medium text-card-foreground hover:bg-muted/50"
-                  onClick={() => navigate(-1)}
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  type="submit"
-                  className="flex-1 h-12 rounded-xl text-base font-semibold"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Registrando..." : "Registrarme"}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+            {/* Buttons */}
+            <div className="flex gap-4 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1 h-12 rounded-xl border-white/10 bg-white/5 text-white hover:bg-white/10 hover:text-white transition-all duration-300"
+                onClick={() => navigate(-1)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 h-12 rounded-xl text-base font-semibold"
+                disabled={isLoading}
+              >
+                {isLoading ? "Registrando..." : "Registrarme"}
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
