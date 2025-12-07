@@ -154,19 +154,6 @@ const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Nombre de usuario</label>
-              <Input
-                type="text"
-                name="username"
-                placeholder="Tu nombre de usuario"
-                value={formData.username}
-                onChange={handleChange}
-                className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
               <label className="text-sm text-white/80 font-medium">Plataforma</label>
               <select
                 name="platform"
