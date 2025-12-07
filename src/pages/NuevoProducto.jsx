@@ -86,7 +86,9 @@ const NuevoProducto = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("streamer", localStorage.getItem("sellerName") || "");
+      const streamerUsername = localStorage.getItem("username") || "";
+      formDataToSend.append("streamer", streamerUsername);
+      console.log("Uploading product for streamer:", streamerUsername);
       formDataToSend.append("sku", formData.sku);
       formDataToSend.append("name", formData.name);
       formDataToSend.append("user_description", formData.description);
