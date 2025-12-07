@@ -3,17 +3,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { User, Phone, Mail, UserPlus } from "lucide-react";
+import { User, Phone, Mail, UserPlus, Eye, EyeOff, Lock } from "lucide-react";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
 const NuevoCliente = () => {
   const { referrerId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
+    password: "",
     referredBy: referrerId || "",
   });
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ const NuevoCliente = () => {
           name: formData.fullName,
           phone: formData.phone,
           email: formData.email,
+          password: formData.password,
           referredBy: formData.referredBy,
         }),
       });
@@ -146,6 +149,29 @@ const NuevoCliente = () => {
                   className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                   required
                 />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Contraseña</label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Mi contraseña"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="h-12 pl-12 pr-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
 
