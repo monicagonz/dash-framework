@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProfileLayout from "@/components/layout/ProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Package, Edit, Trash2 } from "lucide-react";
-import { useProducts } from "@/context/ProductsContext";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -21,21 +20,73 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const ProfileProductos = () => {
-  const { products, deleteProduct } = useProducts();
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Cargar productos desde la API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("https://api.tu-proyecto.com/seller/products", {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al cargar productos");
+        }
+
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: error.message || "No se pudieron cargar los productos",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [toast]);
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleDelete = (id, name) => {
-    deleteProduct(id);
-    toast({
-      title: "Producto eliminado",
-      description: `"${name}" se ha eliminado correctamente.`,
-    });
+  const handleDelete = async (id, name) => {
+    try {
+      const response = await fetch(`https://api.tu-proyecto.com/seller/products/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar el producto");
+      }
+
+      setProducts((prev) => prev.filter((product) => product.id !== id));
+      toast({
+        title: "Producto eliminado",
+        description: `"${name}" se ha eliminado correctamente.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "No se pudo eliminar el producto",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleEdit = (id) => {
