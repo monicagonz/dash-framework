@@ -38,12 +38,10 @@ const ProfileClientes = () => {
               </Button>
             </div>
 
-            {/* Table Header */}
-            <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground font-medium mb-2 px-2">
+            <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground font-medium mb-2 px-2">
               <span>Cliente</span>
               <span>Compra Reciente</span>
               <span>Estado</span>
-              <span>Acciones</span>
             </div>
 
             {/* Client Rows */}
@@ -51,7 +49,7 @@ const ProfileClientes = () => {
               {clientsData.map((client) => (
                 <div
                   key={client.id}
-                  className="grid grid-cols-4 gap-2 items-center py-3 px-2 rounded-xl bg-muted/30 text-sm"
+                  className="grid grid-cols-3 gap-2 items-center py-3 px-2 rounded-xl bg-muted/30 text-sm"
                 >
                   <span className="font-medium text-card-foreground truncate">
                     {client.name}
@@ -69,13 +67,6 @@ const ProfileClientes = () => {
                   >
                     • {client.status}
                   </Badge>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-6 text-xs rounded-lg border-primary/50 text-primary hover:text-primary-foreground px-2"
-                  >
-                    Ver Perfil
-                  </Button>
                 </div>
               ))}
             </div>
