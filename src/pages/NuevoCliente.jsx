@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Phone, Mail, AtSign } from "lucide-react";
+import { ArrowLeft, User, Phone, Mail } from "lucide-react";
 import LullabayLogo from "@/components/ui/LullabayLogo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,7 +13,6 @@ const NuevoCliente = () => {
     fullName: "",
     phone: "",
     email: "",
-    username: "",
   });
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -59,12 +58,12 @@ const NuevoCliente = () => {
           <CardContent className="p-6">
             {/* Header */}
             <div className="mb-6">
-              <p className="text-sm text-muted-foreground mb-1">Nuevo Cliente</p>
+              <p className="text-sm text-muted-foreground mb-1">Registro</p>
               <h1 className="text-2xl font-bold text-card-foreground">
-                Registrar Cliente
+                ¡Hola! Regístrate
               </h1>
               <p className="text-sm text-muted-foreground mt-2">
-                Ingresa los datos del nuevo cliente
+                Ingresa tus datos para crear tu cuenta
               </p>
             </div>
 
@@ -75,7 +74,7 @@ const NuevoCliente = () => {
                 <Input
                   type="text"
                   name="fullName"
-                  placeholder="Nombre completo"
+                  placeholder="Mi nombre completo"
                   value={formData.fullName}
                   onChange={handleChange}
                   className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
@@ -88,7 +87,7 @@ const NuevoCliente = () => {
                 <Input
                   type="tel"
                   name="phone"
-                  placeholder="Celular"
+                  placeholder="Mi celular"
                   value={formData.phone}
                   onChange={handleChange}
                   className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
@@ -101,7 +100,7 @@ const NuevoCliente = () => {
                 <Input
                   type="email"
                   name="email"
-                  placeholder="Correo electrónico"
+                  placeholder="Mi correo electrónico"
                   value={formData.email}
                   onChange={handleChange}
                   className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
@@ -109,18 +108,33 @@ const NuevoCliente = () => {
                 />
               </div>
 
-              <div className="relative">
-                <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Usuario (ej: @cliente)"
-                  value={formData.username}
-                  onChange={handleChange}
-                  className="h-12 pl-10 rounded-xl bg-muted/50 border-0 placeholder:text-muted-foreground/60"
-                  required
-                />
+              {/* Buttons */}
+              <div className="flex gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1 h-12 rounded-xl border-border bg-muted/30 font-medium text-card-foreground hover:bg-muted/50"
+                  onClick={() => navigate("/profile/clientes")}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 h-12 rounded-xl text-base font-semibold"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Registrando..." : "Registrarme"}
+                </Button>
               </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default NuevoCliente;
 
               {/* Buttons */}
               <div className="flex gap-3 pt-2">
