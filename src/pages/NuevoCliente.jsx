@@ -44,7 +44,7 @@ const NuevoCliente = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/profile/clientes")}
+            onClick={() => navigate(-1)}
             className="text-white hover:bg-white/10"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -114,7 +114,7 @@ const NuevoCliente = () => {
                   type="button"
                   variant="outline"
                   className="flex-1 h-12 rounded-xl border-border bg-muted/30 font-medium text-card-foreground hover:bg-muted/50"
-                  onClick={() => navigate("/profile/clientes")}
+                  onClick={() => navigate(-1)}
                 >
                   Cancelar
                 </Button>
