@@ -42,16 +42,24 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log("Login response:", data);
 
       if (!response.ok) {
         throw new Error(data.message || "Credenciales inválidas");
       }
 
       // Guardar token y username en localStorage
-      localStorage.setItem("authToken", data.token);
-      if (data.username) {
-        localStorage.setItem("username", data.username);
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
       }
+      
+      // Guardar username - puede venir como username, user, name o streamer
+      const username = data.username || data.user || data.streamer || data.name;
+      if (username) {
+        localStorage.setItem("username", username);
+        console.log("Username saved:", username);
+      }
+      
       if (data.name) {
         localStorage.setItem("sellerName", data.name);
       }
