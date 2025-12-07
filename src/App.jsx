@@ -7,13 +7,13 @@ import { ProductsProvider } from "@/context/ProductsContext";
 import { ProfileProvider } from "@/context/ProfileContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ProfileClientes from "./pages/ProfileClientes";
 import ProfileProductos from "./pages/ProfileProductos";
 import NuevoProducto from "./pages/NuevoProducto";
 import EditarProducto from "./pages/EditarProducto";
 import NotFound from "./pages/NotFound";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -27,6 +27,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/clientes" element={<ProfileClientes />} />
               <Route path="/profile/productos" element={<ProfileProductos />} />
