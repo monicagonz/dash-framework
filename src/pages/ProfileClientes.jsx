@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ProfileLayout from "@/components/layout/ProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 
 const clientsData = [
   { id: 1, name: "María González", username: "@maria_gonzalez" },
@@ -16,6 +17,7 @@ const clientsData = [
 
 const ProfileClientes = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const filteredClients = clientsData.filter((client) => {
     return client.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -73,9 +75,13 @@ const ProfileClientes = () => {
           </CardContent>
         </Card>
 
-        {/* Load More */}
-        <Button className="w-full h-12 rounded-xl text-base font-semibold">
-          Cargar Más Clientes
+        {/* Add Client Button */}
+        <Button 
+          className="w-full h-12 rounded-xl text-base font-semibold"
+          onClick={() => navigate("/nuevo-cliente")}
+        >
+          <Plus className="h-5 w-5 mr-2" />
+          Agregar Cliente
         </Button>
       </div>
     </ProfileLayout>
