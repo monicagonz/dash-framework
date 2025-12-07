@@ -94,7 +94,8 @@ const NuevoProducto = () => {
           sku: formData.sku,
           price: parseFloat(formData.price),
           stock: parseInt(formData.stock) || 0,
-          images: imagePreviews
+          files: imagePreviews,
+          streamer: localStorage.getItem("sellerName") || ""
         })
       });
 
