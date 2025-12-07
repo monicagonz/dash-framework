@@ -100,7 +100,9 @@ const ProfileClientes = () => {
   const handleStatusUpdate = async (buyer, status) => {
     if (!buyer?.id || buyer.status === status) return;
     const token = getStoredAuthToken();
-    if (!token) {
+    const username = localStorage.getItem("username");
+
+    if (!token || !username) {
       toast({
         title: "Sesión expirada",
         description: "Inicia sesión nuevamente para actualizar el estado.",
@@ -111,7 +113,7 @@ const ProfileClientes = () => {
 
     setIsUpdatingStatus(buyer.id);
     try {
-      const url = `https://liveshop.com.co/chat/buyers/${buyer.id}/status?status=${status}`;
+      const url = `https://liveshop.com.co/chat/buyers/${username}/status?status=${status}`;
       const response = await fetch(url, {
         method: "PATCH",
         headers: {
