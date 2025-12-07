@@ -9,6 +9,7 @@ export interface Product {
   stock: number;
   status: "Activo" | "Agotado" | "Bajo Stock";
   image?: string;
+  images?: string[];
 }
 
 interface ProductsContextType {
