@@ -72,7 +72,7 @@ const ProfileClientes = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-6 text-xs rounded-lg border-muted px-2"
+                    className="h-6 text-xs rounded-lg border-primary/50 text-primary hover:text-primary-foreground px-2"
                   >
                     Ver Perfil
                   </Button>
