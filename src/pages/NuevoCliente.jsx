@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { User, Phone, Mail } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { User, Phone, Mail, UserPlus } from "lucide-react";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
 
 const NuevoCliente = () => {
+  const { referrerId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
+    referredBy: referrerId || "",
   });
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -53,6 +56,16 @@ const NuevoCliente = () => {
 
         {/* Glass Card */}
         <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl">
+          {/* Referral Badge */}
+          {referrerId && (
+            <div className="mb-6 flex justify-center">
+              <Badge className="bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm font-medium flex items-center gap-2">
+                <UserPlus className="h-4 w-4" />
+                Invitado por: {referrerId}
+              </Badge>
+            </div>
+          )}
+
           {/* Header */}
           <div className="mb-8 text-center">
             <p className="text-sm text-primary font-medium mb-2">Registro</p>
