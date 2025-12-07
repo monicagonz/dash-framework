@@ -19,31 +19,31 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
 
-  // Cargar datos del perfil al montar el componente
+  // Cargar datos del perfil desde localStorage al montar el componente
   useEffect(() => {
-    const fetchProfile = async () => {
+    const loadProfileFromStorage = () => {
       try {
-        const response = await fetch("https://api.tu-proyecto.com/seller/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("authToken")}`
-          }
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
           setFormData({
-            fullName: data.fullName || "",
-            email: data.email || "",
-            phone: data.phone || "",
-            address: data.address || "",
+            fullName: userData.fullName || userData.name || "",
+            email: userData.email || "",
+            phone: userData.phone || "",
+            address: userData.address || "",
           });
-          updateProfile(data);
+          updateProfile(userData);
+        } else {
+          // Fallback al contexto si no hay datos en localStorage
+          setFormData({
+            fullName: profile.fullName,
+            email: profile.email,
+            phone: profile.phone,
+            address: profile.address,
+          });
         }
       } catch (error) {
-        // Si falla, usar datos del contexto como fallback
+        console.error("Error loading profile from localStorage:", error);
         setFormData({
           fullName: profile.fullName,
           email: profile.email,
@@ -55,33 +55,33 @@ const Profile = () => {
       }
     };
 
-    fetchProfile();
+    loadProfileFromStorage();
   }, []);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.tu-proyecto.com/seller/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("authToken")}`
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Error al guardar el perfil");
-      }
-
+      // Obtener datos actuales de localStorage
+      const storedUser = localStorage.getItem("user");
+      const currentData = storedUser ? JSON.parse(storedUser) : {};
+      
+      // Combinar datos existentes con los nuevos
+      const updatedData = {
+        ...currentData,
+        ...formData,
+      };
+      
+      // Guardar en localStorage
+      localStorage.setItem("user", JSON.stringify(updatedData));
+      
+      // Actualizar contexto
       updateProfile(formData);
+      
       toast({
         title: "Perfil actualizado",
         description: "Tus datos se han guardado correctamente.",
@@ -89,7 +89,7 @@ const Profile = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "No se pudo guardar el perfil. Intenta de nuevo.",
+        description: "No se pudo guardar el perfil. Intenta de nuevo.",
         variant: "destructive"
       });
     } finally {
