@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Image, X, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useProducts } from "@/context/ProductsContext";
+
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 
 const NuevoProducto = () => {
@@ -23,7 +23,7 @@ const NuevoProducto = () => {
   });
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { addProduct } = useProducts();
+  
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -97,7 +97,7 @@ const NuevoProducto = () => {
         formDataToSend.append("files", file);
       });
 
-      const response = await fetch("'https://liveshop.com.co/ecommerce/products/upload", {
+      const response = await fetch("https://liveshop.com.co/ecommerce/products/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
