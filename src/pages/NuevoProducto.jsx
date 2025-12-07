@@ -92,12 +92,12 @@ const NuevoProducto = () => {
       formDataToSend.append("user_description", formData.description);
       formDataToSend.append("price", formData.price);
       formDataToSend.append("stock", formData.stock || "0");
-      
+
       imageFiles.forEach((file) => {
         formDataToSend.append("files", file);
       });
 
-      const response = await fetch("https://liveshop.com.co/products/upload", {
+      const response = await fetch("'https://liveshop.com.co/ecommerce/products/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
