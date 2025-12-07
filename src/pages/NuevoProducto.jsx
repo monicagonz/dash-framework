@@ -85,24 +85,21 @@ const NuevoProducto = () => {
     setIsLoading(true);
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("streamer", localStorage.getItem("sellerName") || "");
-      formDataToSend.append("sku", formData.sku);
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("user_description", formData.description);
-      formDataToSend.append("price", parseFloat(formData.price));
-      formDataToSend.append("stock", parseInt(formData.stock) || 0);
-      
-      imageFiles.forEach((file) => {
-        formDataToSend.append("files", file);
-      });
-
       const response = await fetch("https://72.61.76.44:8082/seller/products", {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
-        body: formDataToSend,
+        body: JSON.stringify({
+          streamer: localStorage.getItem("sellerName") || "",
+          sku: formData.sku,
+          name: formData.name,
+          user_description: formData.description,
+          price: parseFloat(formData.price),
+          stock: parseInt(formData.stock) || 0,
+          files: imagePreviews,
+        }),
       });
 
       const data = await response.json();
