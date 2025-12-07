@@ -47,7 +47,11 @@ const ProfileClientes = () => {
               <Button 
                 variant={statusFilter === "Nuevo" ? "default" : "outline"} 
                 size="sm" 
-                className="h-10 rounded-xl border-muted text-xs"
+                className={`h-10 rounded-xl text-xs ${
+                  statusFilter === "Nuevo" 
+                    ? "" 
+                    : "border-primary/50 text-primary hover:bg-primary/10"
+                }`}
                 onClick={() => setStatusFilter(statusFilter === "Nuevo" ? null : "Nuevo")}
               >
                 Nuevo
@@ -55,7 +59,11 @@ const ProfileClientes = () => {
               <Button 
                 variant={statusFilter === "Recurrente" ? "default" : "outline"} 
                 size="sm" 
-                className="h-10 rounded-xl border-muted text-xs"
+                className={`h-10 rounded-xl text-xs ${
+                  statusFilter === "Recurrente" 
+                    ? "" 
+                    : "border-primary/50 text-primary hover:bg-primary/10"
+                }`}
                 onClick={() => setStatusFilter(statusFilter === "Recurrente" ? null : "Recurrente")}
               >
                 Recurrente
