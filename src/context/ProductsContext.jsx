@@ -3,10 +3,10 @@ import { createContext, useContext, useState } from "react";
 const ProductsContext = createContext(undefined);
 
 const initialProducts = [
-  { id: 1, name: "Cámara Vintage 35mm", price: 299.99, stock: 5, status: "Activo", sku: "CAM-001" },
-  { id: 2, name: "Lente 50mm f/1.8", price: 149.99, stock: 12, status: "Activo", sku: "LEN-001" },
-  { id: 3, name: "Trípode Profesional", price: 89.99, stock: 0, status: "Agotado", sku: "TRI-001" },
-  { id: 4, name: "Flash Externo", price: 199.99, stock: 3, status: "Bajo Stock", sku: "FLA-001" },
+  { id: 1, name: "Cámara Vintage 35mm", price: 299.99, stock: 5, status: "Activo", sku: "CAM-001", category: "Cámaras" },
+  { id: 2, name: "Lente 50mm f/1.8", price: 149.99, stock: 12, status: "Activo", sku: "LEN-001", category: "Lentes" },
+  { id: 3, name: "Trípode Profesional", price: 89.99, stock: 0, status: "Agotado", sku: "TRI-001", category: "Accesorios" },
+  { id: 4, name: "Flash Externo", price: 199.99, stock: 3, status: "Bajo Stock", sku: "FLA-001", category: "Iluminación" },
 ];
 
 const getStatus = (stock) => {
