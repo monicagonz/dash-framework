@@ -47,8 +47,14 @@ const Login = () => {
         throw new Error(data.message || "Credenciales inválidas");
       }
 
-      // Guardar token en localStorage
+      // Guardar token y username en localStorage
       localStorage.setItem("authToken", data.token);
+      if (data.username) {
+        localStorage.setItem("username", data.username);
+      }
+      if (data.name) {
+        localStorage.setItem("sellerName", data.name);
+      }
 
       toast({
         title: "¡Bienvenido!",
