@@ -40,7 +40,7 @@ const Login = () => {
         <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl">
           {/* Header */}
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">Bienvenido !!!</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Bienvenido !!</h1>
             <p className="text-white/60">Ingresa tus datos para acceder a tu cuenta de vendedor</p>
           </div>
 
