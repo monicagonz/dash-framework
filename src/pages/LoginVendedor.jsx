@@ -30,7 +30,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://liveshop.com.co:8083/login", {
+      const response = await fetch("https://liveshop.com.co/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
