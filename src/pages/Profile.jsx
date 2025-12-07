@@ -15,6 +15,8 @@ const Profile = () => {
     email: "",
     phone: "",
     address: "",
+    username: "",
+    platform: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -24,22 +26,31 @@ const Profile = () => {
     const loadProfileFromStorage = () => {
       try {
         const storedUser = localStorage.getItem("user");
+        const username = localStorage.getItem("username") || "";
+        const sellerName = localStorage.getItem("sellerName") || "";
+        const platform = localStorage.getItem("platform") || "";
+        const email = localStorage.getItem("email") || "";
+        
         if (storedUser) {
           const userData = JSON.parse(storedUser);
           setFormData({
-            fullName: userData.fullName || userData.name || "",
-            email: userData.email || "",
+            fullName: userData.fullName || userData.name || sellerName || "",
+            email: userData.email || email || "",
             phone: userData.phone || "",
             address: userData.address || "",
+            username: userData.username || username || "",
+            platform: userData.platform || platform || "",
           });
           updateProfile(userData);
         } else {
-          // Fallback al contexto si no hay datos en localStorage
+          // Usar datos de localStorage individuales
           setFormData({
-            fullName: profile.fullName,
-            email: profile.email,
-            phone: profile.phone,
-            address: profile.address,
+            fullName: sellerName || profile.fullName || "",
+            email: email || profile.email || "",
+            phone: profile.phone || "",
+            address: profile.address || "",
+            username: username || "",
+            platform: platform || "",
           });
         }
       } catch (error) {
@@ -116,32 +127,62 @@ const Profile = () => {
             <CardContent className="p-6">
               <h2 className="text-lg font-semibold text-white mb-5">Detalles del Perfil</h2>
               <div className="space-y-4">
-                <Input
-                  placeholder="Nombre Completo"
-                  value={formData.fullName}
-                  onChange={(e) => handleInputChange("fullName", e.target.value)}
-                  className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
-                />
-                <Input
-                  placeholder="Correo Electrónico"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
-                />
-                <Input
-                  placeholder="Teléfono de Contacto"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
-                />
-                <Input
-                  placeholder="Dirección del Negocio"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange("address", e.target.value)}
-                  className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
-                />
+                <div>
+                  <label className="text-sm text-white/60 mb-1 block">Username</label>
+                  <Input
+                    placeholder="@username"
+                    value={formData.username}
+                    onChange={(e) => handleInputChange("username", e.target.value)}
+                    className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-white/60 mb-1 block">Plataforma</label>
+                  <Input
+                    placeholder="Plataforma (ej: tiktok)"
+                    value={formData.platform}
+                    onChange={(e) => handleInputChange("platform", e.target.value)}
+                    className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-white/60 mb-1 block">Nombre Completo</label>
+                  <Input
+                    placeholder="Nombre Completo"
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange("fullName", e.target.value)}
+                    className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-white/60 mb-1 block">Correo Electrónico</label>
+                  <Input
+                    placeholder="Correo Electrónico"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-white/60 mb-1 block">Teléfono de Contacto</label>
+                  <Input
+                    placeholder="Teléfono de Contacto"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-white/60 mb-1 block">Dirección del Negocio</label>
+                  <Input
+                    placeholder="Dirección del Negocio"
+                    value={formData.address}
+                    onChange={(e) => handleInputChange("address", e.target.value)}
+                    className="h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50"
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>

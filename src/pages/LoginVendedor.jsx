@@ -48,9 +48,14 @@ const Login = () => {
         throw new Error(data.message || "Credenciales inválidas");
       }
 
-      // Guardar token y username en localStorage
+      // Guardar token y datos del usuario en localStorage
       if (data.token) {
         localStorage.setItem("authToken", data.token);
+      }
+      
+      // Guardar email
+      if (formData.email) {
+        localStorage.setItem("email", formData.email);
       }
       
       // Guardar username - extraer el string del objeto si es necesario
@@ -73,6 +78,11 @@ const Login = () => {
       }
       if (sellerName && typeof sellerName === 'string') {
         localStorage.setItem("sellerName", sellerName);
+      }
+      
+      // Guardar platform si viene en la respuesta
+      if (data.platform) {
+        localStorage.setItem("platform", data.platform);
       }
 
       toast({
