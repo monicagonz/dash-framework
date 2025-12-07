@@ -51,9 +51,7 @@ const Profile = () => {
           {/* Profile Details */}
           <Card className="glass-card">
             <CardContent className="p-6">
-              <h2 className="text-lg font-semibold text-white mb-5">
-                Detalles del Perfil
-              </h2>
+              <h2 className="text-lg font-semibold text-white mb-5">Detalles del Perfil</h2>
               <div className="space-y-4">
                 <Input
                   placeholder="Nombre Completo"
@@ -88,9 +86,7 @@ const Profile = () => {
           {/* Account Settings */}
           <Card className="glass-card">
             <CardContent className="p-6">
-              <h2 className="text-lg font-semibold text-white mb-5">
-                Configuración de Cuenta
-              </h2>
+              <h2 className="text-lg font-semibold text-white mb-5">Configuración de Cuenta</h2>
               <div className="space-y-5">
                 <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                   <span className="text-white">Notificaciones</span>
@@ -117,27 +113,19 @@ const Profile = () => {
         {/* Performance Overview */}
         <Card className="glass-card">
           <CardContent className="p-6">
-            <h2 className="text-lg font-semibold text-white mb-5">
-              Resumen de Rendimiento
-            </h2>
+            <h2 className="text-lg font-semibold text-white mb-5">Resumen de Rendimiento</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-5 rounded-xl bg-white/5 border border-white/10 text-center">
                 <p className="text-sm text-white/50 mb-2">Ventas Totales</p>
-                <p className="text-3xl font-bold text-primary">
-                  ${profile.totalSales.toLocaleString()}
-                </p>
+                <p className="text-3xl font-bold text-primary">${profile.totalSales.toLocaleString()}</p>
               </div>
               <div className="p-5 rounded-xl bg-white/5 border border-white/10 text-center">
                 <p className="text-sm text-white/50 mb-2">Listados Activos</p>
-                <p className="text-3xl font-bold text-white">
-                  {profile.activeListings}
-                </p>
+                <p className="text-3xl font-bold text-white">{profile.activeListings}</p>
               </div>
               <div className="p-5 rounded-xl bg-white/5 border border-white/10 text-center">
                 <p className="text-sm text-white/50 mb-2">Calificación</p>
-                <p className="text-3xl font-bold text-white">
-                  {profile.sellerRating}/5
-                </p>
+                <p className="text-3xl font-bold text-white">{profile.sellerRating}/5</p>
               </div>
             </div>
           </CardContent>
