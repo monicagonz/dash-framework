@@ -11,6 +11,7 @@ import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 
 const NuevoProducto = () => {
   const [dragActive, setDragActive] = useState(false);
+  const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -51,6 +52,7 @@ const NuevoProducto = () => {
 
   const handleFiles = (files) => {
     files.forEach((file) => {
+      setImageFiles((prev) => [...prev, file]);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreviews((prev) => [...prev, reader.result]);
@@ -60,6 +62,7 @@ const NuevoProducto = () => {
   };
 
   const removeImage = (index) => {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -82,21 +85,24 @@ const NuevoProducto = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://72.61.76.44:8082.com/seller/products", {
+      const formDataToSend = new FormData();
+      formDataToSend.append("streamer", localStorage.getItem("sellerName") || "");
+      formDataToSend.append("sku", formData.sku);
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("user_description", formData.description);
+      formDataToSend.append("price", parseFloat(formData.price));
+      formDataToSend.append("stock", parseInt(formData.stock) || 0);
+      
+      imageFiles.forEach((file) => {
+        formDataToSend.append("files", file);
+      });
+
+      const response = await fetch("https://72.61.76.44:8082/seller/products", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
-        body: JSON.stringify({
-          name: formData.name,
-          description: formData.description,
-          sku: formData.sku,
-          price: parseFloat(formData.price),
-          stock: parseInt(formData.stock) || 0,
-          files: imagePreviews,
-          streamer: localStorage.getItem("sellerName") || "",
-        }),
+        body: formDataToSend,
       });
 
       const data = await response.json();
