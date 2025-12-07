@@ -50,7 +50,7 @@ const ProfileClientes = () => {
                 className={`h-10 rounded-xl text-xs ${
                   statusFilter === "Nuevo" 
                     ? "" 
-                    : "border-primary/50 text-primary hover:bg-primary/10"
+                    : "border-muted-foreground/30 text-muted-foreground hover:bg-muted/50 hover:text-card-foreground"
                 }`}
                 onClick={() => setStatusFilter(statusFilter === "Nuevo" ? null : "Nuevo")}
               >
@@ -62,7 +62,7 @@ const ProfileClientes = () => {
                 className={`h-10 rounded-xl text-xs ${
                   statusFilter === "Recurrente" 
                     ? "" 
-                    : "border-primary/50 text-primary hover:bg-primary/10"
+                    : "border-muted-foreground/30 text-muted-foreground hover:bg-muted/50 hover:text-card-foreground"
                 }`}
                 onClick={() => setStatusFilter(statusFilter === "Recurrente" ? null : "Recurrente")}
               >
