@@ -69,21 +69,13 @@ const ProfileClientes = () => {
                   >
                     • {client.status}
                   </Badge>
-                  <div className="flex flex-col gap-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-6 text-xs rounded-lg border-muted px-2"
-                    >
-                      Ver Perfil
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="h-6 text-xs rounded-lg px-2"
-                    >
-                      Iniciar Chat
-                    </Button>
-                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-6 text-xs rounded-lg border-muted px-2"
+                  >
+                    Ver Perfil
+                  </Button>
                 </div>
               ))}
             </div>
