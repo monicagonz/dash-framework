@@ -25,7 +25,7 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://liveshop.com.co:8083/streamers/register", {
+      const response = await fetch("https://liveshop.com.co/streamers/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,11 +112,21 @@ const Register = () => {
                 className="w-full h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300 px-3"
                 required
               >
-                <option value="" className="bg-[#1A0B2E] text-white">Selecciona una plataforma</option>
-                <option value="tiktok" className="bg-[#1A0B2E] text-white">TikTok</option>
-                <option value="instagram" className="bg-[#1A0B2E] text-white">Instagram</option>
-                <option value="youtube" className="bg-[#1A0B2E] text-white">YouTube</option>
-                <option value="twitch" className="bg-[#1A0B2E] text-white">Twitch</option>
+                <option value="" className="bg-[#1A0B2E] text-white">
+                  Selecciona una plataforma
+                </option>
+                <option value="tiktok" className="bg-[#1A0B2E] text-white">
+                  TikTok
+                </option>
+                <option value="instagram" className="bg-[#1A0B2E] text-white">
+                  Instagram
+                </option>
+                <option value="youtube" className="bg-[#1A0B2E] text-white">
+                  YouTube
+                </option>
+                <option value="twitch" className="bg-[#1A0B2E] text-white">
+                  Twitch
+                </option>
               </select>
             </div>
 
