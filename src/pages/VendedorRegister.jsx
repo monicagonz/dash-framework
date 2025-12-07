@@ -23,39 +23,19 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const response = await fetch("https://api.tu-proyecto.com/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Error al registrar");
-      }
-
-      toast({
-        title: "¡Cuenta creada!",
-        description: "Tu cuenta ha sido registrada exitosamente.",
-      });
-      navigate("/profile/clientes");
-    } catch (error) {
-      toast({
-        title: "Error de registro",
-        description: error.message || "No se pudo crear la cuenta. Intenta de nuevo.",
-        variant: "destructive"
-      });
-    } finally {
+    // Simulación de registro (Mockup)
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      toast({
+        title: "¡Cuenta de vendedor creada con éxito!",
+        description: "Ahora puedes iniciar sesión con tus credenciales.",
+      });
+      navigate("/login");
+    }, 1500);
   };
 
   return (
