@@ -45,7 +45,7 @@ const ProfileProductos = () => {
           return;
         }
 
-        const url = `https://liveshop.com.co/ecommerce/products/${username}`;
+        const url = `https://liveshop.com.co/ecommerce/products/view/${username}`;
         console.log("API URL:", url);
 
         const response = await fetch(url, {
