@@ -4,13 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
+    password: "",
   });
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -20,19 +23,39 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simular registro
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await fetch("https://api.tu-proyecto.com/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al registrar");
+      }
+
       toast({
         title: "¡Cuenta creada!",
         description: "Tu cuenta ha sido registrada exitosamente.",
       });
-      navigate("/login");
-    }, 1000);
+      navigate("/profile/clientes");
+    } catch (error) {
+      toast({
+        title: "Error de registro",
+        description: error.message || "No se pudo crear la cuenta. Intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -98,6 +121,28 @@ const Register = () => {
                 className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Contraseña</label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 pr-12 focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             {/* Submit */}
