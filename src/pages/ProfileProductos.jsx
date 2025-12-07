@@ -28,7 +28,7 @@ const ProfileProductos = () => {
 
   // Filtrar productos por búsqueda
   const filteredProducts = products.filter((product) =>
-    product.name?.toLowerCase().includes(searchQuery.toLowerCase())
+    product.name?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   // Cargar productos reales desde la API
@@ -36,7 +36,7 @@ const ProfileProductos = () => {
     const fetchProducts = async () => {
       try {
         const username = localStorage.getItem("username") || "";
-        
+
         if (!username) {
           setProducts([]);
           setIsLoading(false);
@@ -45,9 +45,9 @@ const ProfileProductos = () => {
 
         const response = await fetch(`http://72.61.76.44:8082/products/streamer/${username}`, {
           headers: {
-            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "application/json"
-          }
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "application/json",
+          },
         });
 
         if (!response.ok) {
@@ -89,7 +89,11 @@ const ProfileProductos = () => {
             <h1 className="text-3xl font-bold text-white mb-2">Mis Productos</h1>
             <p className="text-white/50">Administra tu inventario de productos</p>
           </div>
-          <Button size="lg" className="rounded-xl gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25" asChild>
+          <Button
+            size="lg"
+            className="rounded-xl gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25"
+            asChild
+          >
             <Link to="/nuevo-producto">
               <Plus className="h-5 w-5" />
               Nuevo Producto
@@ -125,23 +129,15 @@ const ProfileProductos = () => {
                   >
                     <div className="h-14 w-14 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {product.image ? (
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="h-full w-full object-cover"
-                        />
+                        <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
                       ) : (
                         <Package className="h-7 w-7 text-white/40" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-white text-base truncate">
-                        {product.name}
-                      </h3>
+                      <h3 className="font-medium text-white text-base truncate">{product.name}</h3>
                       <div className="flex items-center gap-3 mt-1 flex-wrap">
-                        <span className="text-primary font-bold text-lg">
-                          ${product.price.toFixed(2)}
-                        </span>
+                        <span className="text-primary font-bold text-lg">${product.price.toFixed(2)}</span>
                         {product.category && (
                           <Badge
                             variant="secondary"
@@ -156,8 +152,8 @@ const ProfileProductos = () => {
                             product.status === "Activo"
                               ? "bg-primary/20 text-primary border border-primary/30"
                               : product.status === "Agotado"
-                              ? "bg-destructive/20 text-destructive border border-destructive/30"
-                              : "bg-warning/20 text-warning border border-warning/30"
+                                ? "bg-destructive/20 text-destructive border border-destructive/30"
+                                : "bg-warning/20 text-warning border border-warning/30"
                           }`}
                         >
                           {product.status}
@@ -175,7 +171,11 @@ const ProfileProductos = () => {
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-destructive/10 hover:bg-destructive/20 border border-destructive/20">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-10 w-10 rounded-xl bg-destructive/10 hover:bg-destructive/20 border border-destructive/20"
+                          >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </AlertDialogTrigger>
@@ -183,11 +183,14 @@ const ProfileProductos = () => {
                           <AlertDialogHeader>
                             <AlertDialogTitle className="text-white">¿Eliminar producto?</AlertDialogTitle>
                             <AlertDialogDescription className="text-white/60">
-                              Esta acción no se puede deshacer. El producto "{product.name}" será eliminado permanentemente.
+                              Esta acción no se puede deshacer. El producto "{product.name}" será eliminado
+                              permanentemente.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel className="rounded-xl bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white">Cancelar</AlertDialogCancel>
+                            <AlertDialogCancel className="rounded-xl bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white">
+                              Cancelar
+                            </AlertDialogCancel>
                             <AlertDialogAction
                               className="rounded-xl bg-destructive hover:bg-destructive/90 text-white"
                               onClick={() => handleDelete(product.sku, product.name)}
@@ -206,7 +209,10 @@ const ProfileProductos = () => {
         </Card>
 
         {/* Add Product Button */}
-        <Button className="w-full h-14 rounded-xl text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25" asChild>
+        <Button
+          className="w-full h-14 rounded-xl text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25"
+          asChild
+        >
           <Link to="/nuevo-producto">
             <Plus className="mr-2 h-5 w-5" />
             Agregar Nuevo Producto
