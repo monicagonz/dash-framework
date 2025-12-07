@@ -67,7 +67,7 @@ const NuevoProducto = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.name || !formData.price) {
@@ -80,23 +80,44 @@ const NuevoProducto = () => {
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      addProduct({
-        name: formData.name,
-        description: formData.description,
-        sku: formData.sku,
-        price: parseFloat(formData.price),
-        stock: parseInt(formData.stock) || 0,
-        image: imagePreviews[0] || undefined,
-        images: imagePreviews,
+
+    try {
+      const response = await fetch("https://api.tu-proyecto.com/seller/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          description: formData.description,
+          sku: formData.sku,
+          price: parseFloat(formData.price),
+          stock: parseInt(formData.stock) || 0,
+          images: imagePreviews
+        })
       });
-      setIsLoading(false);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al publicar el producto");
+      }
+
       toast({
         title: "Producto publicado",
         description: "Tu producto se ha publicado correctamente.",
       });
       navigate("/profile/productos");
-    }, 800);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "No se pudo publicar el producto. Intenta de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
