@@ -23,7 +23,6 @@ const NuevoProducto = () => {
   });
   const navigate = useNavigate();
   const { toast } = useToast();
-  
 
   const handleDrag = (e) => {
     e.preventDefault();
