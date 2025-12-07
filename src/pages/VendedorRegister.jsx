@@ -4,16 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ShopMatchLogo from "@/components/ui/ShopMatchLogo";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     username: "",
+    password: "",
     platform: "",
     follower_count: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -28,11 +30,12 @@ const Register = () => {
 
     try {
       const requestBody = {
-        name: formData.name,
         email: formData.email,
         username: formData.username,
+        password_hash: formData.password,
         platform: formData.platform,
         follower_count: parseInt(formData.follower_count) || 0,
+        created_at: new Date().toISOString(),
       };
       
       console.log("Enviando registro:", requestBody);
@@ -103,19 +106,6 @@ const Register = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm text-white/80 font-medium">Nombre completo</label>
-              <Input
-                type="text"
-                name="name"
-                placeholder="Tu nombre completo"
-                value={formData.name}
-                onChange={handleChange}
-                className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
               <label className="text-sm text-white/80 font-medium">Correo electrónico</label>
               <Input
                 type="email"
@@ -126,6 +116,41 @@ const Register = () => {
                 className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Nombre de usuario</label>
+              <Input
+                type="text"
+                name="username"
+                placeholder="@tu_usuario"
+                value={formData.username}
+                onChange={handleChange}
+                className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm text-white/80 font-medium">Contraseña</label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Tu contraseña"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="h-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-primary focus:ring-primary/50 transition-all duration-300 pr-12"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <div className="space-y-2">
