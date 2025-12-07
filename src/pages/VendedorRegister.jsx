@@ -32,7 +32,9 @@ const Register = () => {
       const requestBody = {
         email: formData.email,
         username: formData.username,
+        name: formData.username,
         password_hash: formData.password,
+        password: formData.password,
         platform: formData.platform,
         follower_count: parseInt(formData.follower_count) || 0,
         created_at: new Date().toISOString(),
@@ -40,7 +42,7 @@ const Register = () => {
       
       console.log("Enviando registro:", requestBody);
       
-      const response = await fetch("https://liveshop.com.co/streamers/register", {
+      const response = await fetch("https://liveshop.com.co/clients/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
