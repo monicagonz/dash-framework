@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import * as React from "react";
+
+const { useState, useEffect } = React;
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -137,7 +139,7 @@ function useToast() {
         listeners.splice(index, 1);
       }
     };
-  }, [state]);
+  }, []);
 
   return {
     ...state,

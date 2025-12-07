@@ -130,16 +130,26 @@ const ProfileProductos = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
+<<<<<<< HEAD
     return products.filter((product) =>
       product.name?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
+=======
+    return products.filter((product) => product.name?.toLowerCase().includes(searchQuery.toLowerCase()));
+>>>>>>> 269ded01d41095e06b9187e148dbe9833c2ce8f3
   }, [products, searchQuery]);
 
   const stats = useMemo(() => {
     const totalStock = products.reduce((acc, product) => acc + getProductStock(product), 0);
     const outOfStock = products.filter((product) => getProductStatus(product) === "Agotado").length;
     const avgPrice =
+<<<<<<< HEAD
       products.length === 0 ? 0 : products.reduce((acc, product) => acc + Number(product.price || 0), 0) / products.length;
+=======
+      products.length === 0
+        ? 0
+        : products.reduce((acc, product) => acc + Number(product.price || 0), 0) / products.length;
+>>>>>>> 269ded01d41095e06b9187e148dbe9833c2ce8f3
 
     return [
       {
@@ -291,7 +301,16 @@ const ProfileProductos = () => {
                           </span>
                           {createdAt && (
                             <span className="text-xs text-white/40">
+<<<<<<< HEAD
                               Creado: {createdAt.toLocaleDateString("es-CO", { year: "numeric", month: "short", day: "numeric" })}
+=======
+                              Creado:{" "}
+                              {createdAt.toLocaleDateString("es-CO", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })}
+>>>>>>> 269ded01d41095e06b9187e148dbe9833c2ce8f3
                             </span>
                           )}
                         </div>
