@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Image, X, ArrowLeft } from "lucide-react";
+import { Image, X, ArrowLeft, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProducts } from "@/context/ProductsContext";
 
@@ -16,7 +16,7 @@ const EditarProducto = () => {
   const { toast } = useToast();
 
   const [dragActive, setDragActive] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -37,7 +37,12 @@ const EditarProducto = () => {
           price: product.price.toString(),
           stock: product.stock.toString(),
         });
-        setImagePreview(product.image || null);
+        // Handle both single image and array of images
+        if (product.images && Array.isArray(product.images)) {
+          setImagePreviews(product.images);
+        } else if (product.image) {
+          setImagePreviews([product.image]);
+        }
       } else {
         toast({
           title: "Producto no encontrado",
@@ -62,23 +67,29 @@ const EditarProducto = () => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFiles(Array.from(e.dataTransfer.files));
     }
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFile(e.target.files[0]);
+    if (e.target.files && e.target.files.length > 0) {
+      handleFiles(Array.from(e.target.files));
     }
   };
 
-  const handleFile = (file) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
+  const handleFiles = (files) => {
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeImage = (index) => {
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleInputChange = (field, value) => {
@@ -106,7 +117,8 @@ const EditarProducto = () => {
           sku: formData.sku,
           price: parseFloat(formData.price),
           stock: parseInt(formData.stock) || 0,
-          image: imagePreview || undefined,
+          image: imagePreviews[0] || undefined,
+          images: imagePreviews,
         });
       }
       setIsLoading(false);
@@ -138,48 +150,63 @@ const EditarProducto = () => {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Image Upload */}
-            <div
-              className={`relative rounded-2xl border-2 border-dashed transition-colors ${
-                dragActive
-                  ? "border-primary bg-primary/5"
-                  : "border-muted-foreground/20"
-              } ${imagePreview ? "p-2" : "p-8"}`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              {imagePreview ? (
-                <div className="relative">
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-full h-40 object-cover rounded-xl"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setImagePreview(null)}
-                    className="absolute top-2 right-2 h-8 w-8 bg-card rounded-full flex items-center justify-center shadow-lg hover:bg-muted"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="absolute inset-0 cursor-pointer opacity-0"
-                  />
-                  <div className="mx-auto h-12 w-12 rounded-xl bg-muted flex items-center justify-center mb-3">
-                    <Image className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Arrastra tu foto
-                  </p>
+            <div className="space-y-3">
+              {/* Image Previews Grid */}
+              {imagePreviews.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={index} className="relative aspect-square">
+                      <img
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 h-6 w-6 bg-card rounded-full flex items-center justify-center shadow-lg hover:bg-muted"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
+
+              {/* Upload Area */}
+              <div
+                className={`relative rounded-2xl border-2 border-dashed transition-colors p-6 ${
+                  dragActive
+                    ? "border-primary bg-primary/5"
+                    : "border-muted-foreground/20"
+                }`}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  className="absolute inset-0 cursor-pointer opacity-0"
+                />
+                <div className="text-center">
+                  <div className="mx-auto h-12 w-12 rounded-xl bg-muted flex items-center justify-center mb-3">
+                    {imagePreviews.length > 0 ? (
+                      <Plus className="h-6 w-6 text-muted-foreground" />
+                    ) : (
+                      <Image className="h-6 w-6 text-muted-foreground" />
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {imagePreviews.length > 0
+                      ? "Agregar más fotos"
+                      : "Arrastra tus fotos"}
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Name */}
